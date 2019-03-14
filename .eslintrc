@@ -1,11 +1,13 @@
 {
   "env": {
+    "es6": true,
     "jest/globals": true
   },
   "parser": "babel-eslint",
   "plugins": [
     "better-styled-components",
-    "jest"
+    "jest",
+    "react"
   ],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
@@ -59,6 +61,9 @@
     "prefer-template": 2,
     "quotes": ["error", "backtick", {"allowTemplateLiterals": true}],
     "radix": "error",
+    "react/jsx-no-undef": [2, { "allowGlobals": true }],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": [2],
     "semi": ["error", "never"],
     "space-before-blocks": ["error", "always"],
     "space-before-function-paren": ["error", {"anonymous": "always", "named": "never", "asyncArrow": "always"}],
