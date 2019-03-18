@@ -86,3 +86,36 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 })
+
+describe(`Helper functions`, () => {
+  test(`λ.compose() => fn`, () => {
+    expect(typeof λ.compose()).toBe(`function`)
+  })
+
+  test(`λ.compose math functions`, () => {
+    const minusOne = x => x - 1
+    const square = x => x * x
+    const addOne = x => x + 1
+    const input = λ.compose(
+      minusOne,
+      square,
+      addOne
+    )
+
+    expect(input(1)).toBe(3)
+  })
+
+  test(`λ.compose rect elements`, () => {
+    const input = λ.compose(
+      λ.h1({className: `title`}),
+      λ.a
+    )
+    const result = (
+      <h1 className='title'>
+        <a>Read more</a>
+      </h1>
+    )
+
+    expect(input(`Read more`)).toEqual(result)
+  })
+})

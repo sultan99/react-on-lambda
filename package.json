@@ -9,6 +9,10 @@
   },
   "author": "sultan99",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sultan99/react-on-lambda"
+  },
   "dependencies": {
     "react": "^16.8.4",
     "styled-components": "^4.1.3"
