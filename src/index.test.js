@@ -1,35 +1,35 @@
-import React, {Fragment} from 'react'
-import λ, {extractChilds} from './index.js'
-
-// describe(`Helper functions`, () => {
-//   test(`extractChilds(fn)`, () => {
-//     const input = extractChilds([λ.h1])
-//     const result = <h1></h1>
-//
-//     expect(input).toEqual(result)
-//   })
-//
-//   test(`extractChilds(string, node, fn)`, () => {
-//     const input = extractChilds([
-//       `just text`,
-//       λ.h1(`title`),
-//       λ.p
-//     ])
-//     const result = (
-//       <Fragment>
-//         just text
-//         <h1>title</h1>
-//         <p></p>
-//       </Fragment>
-//     )
-//
-//     expect(input).toEqual(result)
-//   })
-// })
+import React from 'react'
+import λ from './index.js'
 
 describe(`Core functions`, () => {
   test(`λ.div -> fn`, () => {
     expect(typeof λ.div).toBe(`function`)
+  })
+
+  test(`λ.div(props) -> fn`, () => {
+    const div = λ.div({className: `app`})
+
+    expect(typeof div).toBe(`function`)
+  })
+
+  test(`λ.div(props)`, () => {
+    const div = λ.div({className: `app`})
+    const result = <div className = 'app'/>
+
+    expect(div()).toEqual(result)
+  })
+
+  test(`λ.div(props, string)`, () => {
+    const input = λ.div({className: `app`},
+      `Hello world!`
+    )
+    const result = (
+      <div className = 'app'>
+        Hello world!
+      </div>
+    )
+
+    expect(input).toEqual(result)
   })
 
   test(`λ.div() -> empty element`, () => {
@@ -43,12 +43,11 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 
-  test(`λ.div({props}) -> fn`, () => {
-    const div = λ.div({className: `app`})
-    const result = <div className = 'app'/>
+  test(`λ.div(element)`, () => {
+    const input = λ.div(λ.span(`Hello`))
+    const result = <div><span>Hello</span></div>
 
-    expect(typeof div).toBe(`function`)
-    expect(div()).toEqual(result)
+    expect(input).toEqual(result)
   })
 
   test(`λ.div(λ.fn)`, () => {
@@ -58,26 +57,7 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 
-  test(`λ.div(element)`, () => {
-    const input = λ.div(λ.span(`Hello`))
-    const result = <div><span>Hello</span></div>
-
-    expect(input).toEqual(result)
-  })
-
-  test(`λ.div({props}, string)`, () => {
-    const input = λ.div({className: `app`},
-      `Hello world!`
-    )
-    const result = (
-      <div className = 'app'>
-        Hello world!
-      </div>
-    )
-    expect(input).toEqual(result)
-  })
-
-  test(`λ.div([λ.fn, elment])`, () => {
+  test(`λ.div(λ.fn, elment)`, () => {
     const input = λ.div(
       λ.p,
       λ.span(`Hello`)
@@ -88,6 +68,7 @@ describe(`Core functions`, () => {
         <span>Hello</span>
       </div>
     )
+
     expect(input).toEqual(result)
   })
 
@@ -101,6 +82,7 @@ describe(`Core functions`, () => {
         {items.map((item, key) => <li key={key}>{item}</li>)}
       </ul>
     )
+
     expect(input).toEqual(result)
   })
 })

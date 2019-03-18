@@ -1,46 +1,47 @@
 import React from 'react'
 import tags from './tags'
 
-export const extractChilds = (nodes = []) => {
-  const children = nodes.map(node =>
-    typeof node === `function`
-      ? node() : node
+export const parseParams = args => (
+  args && args.map(arg =>
+    typeof arg === `function` ? arg() : arg
   )
-  return children.length > 1 ? children : children[0]
-}
+)
 
-const createElement = tagName => (props, ...children) => {
+const createElement = tagName => (...args) => {
+  if (!args.length) {
+    return React.createElement(tagName)
+  }
+
+  const [props, ...children] = args
+  const isObject = props !== null && typeof props === `object`
+  const isNode = isObject && props.$$typeof
+  const isFunction = typeof props === `function`
+  const isString = typeof props === `string`
+  if (isNode || isFunction || isString) {
+    return React.createElement(
+      tagName, null, ...parseParams(args)
+    )
+  }
+
   const isArray = Array.isArray(props)
-  const isNode = props && props.$$typeof
-  const isProps = props && !isNode && !isArray && typeof props === `object`
-
+  const isProps = isObject && !isNode && !isArray
   if (isProps && !children.length) {
     return (...childs) => React.createElement(
-      tagName, props, extractChilds(childs)
-    )
-  }
-  if (isNode || typeof props === `string`) {
-    return React.createElement(
-      tagName, null, props
-    )
-  }
-  if (typeof props === `function`) {
-    return React.createElement(
-      tagName, null, extractChilds([props, ...children])
+      tagName, ...parseParams([props, ...childs])
     )
   }
   if (isArray) {
     return React.createElement(
-      tagName, null, props
+      tagName, null, parseParams(props)
     )
   }
 
   return React.createElement(
-    tagName, props, extractChilds(children)
+    tagName, ...parseParams(args)
   )
 }
 
-const lambda = () => {}
+const lambda = comp => createElement(comp)
 
 tags.forEach(tag =>
   lambda[tag] = createElement(tag)
