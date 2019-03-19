@@ -1,9 +1,9 @@
 .babelrc
-.DS_Store
 .editorconfig
 .eslintrc
 .gitattributes
 .gitignore
-.gitignore
+.log
 node_modules
+src
 webpack.config.js

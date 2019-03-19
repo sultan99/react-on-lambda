@@ -93,11 +93,11 @@ describe(`Helper functions`, () => {
   })
 
   test(`λ.compose math functions`, () => {
-    const minusOne = x => x - 1
+    const subtract = b => a => a - b
     const square = x => x * x
     const addOne = x => x + 1
     const input = λ.compose(
-      minusOne,
+      subtract(1),
       square,
       addOne
     )

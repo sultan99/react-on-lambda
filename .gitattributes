@@ -16,7 +16,7 @@ yarn.lock merge=ours
 
 # misc config
 .editorconfig text eol=lf
-.eslintrc
+.eslintrc eol=lf
 *.yaml text eol=lf
 *.yml text eol=lf
 

@@ -22,7 +22,7 @@ Get all benefits of functional programming:
 - fun functional programming
 - less & clean coding
 - easy to learn
-- minimal size (2,68kb)
+- minimal size (~1.3kb)
 
 
 
@@ -53,7 +53,7 @@ const post = λ.div(
 )
 
 render(
-  post(),
+  post,
   document.getElementById(`app`)
 )
 
@@ -61,16 +61,16 @@ render(
 
 ## Getting started
 
-First, install `react-on-lambda`:
+Next version `styled-components` will be optional.
 
 ```sh
-$ npm i react-on-lambda -S
+$ npm i react-on-lambda react styled-components -S
 ```
 
 or install with yarn:
 
 ```sh
-$ yarn add react-on-lambda
+$ yarn add react-on-lambda react styled-components
 ```
 
 ## API documentation

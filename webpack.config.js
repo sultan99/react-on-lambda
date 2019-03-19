@@ -8,11 +8,11 @@ module.exports = {
   mode: `production`,
   output: {
     path: rootPath(`./dist`),
-    filename: `${libraryName}.production.js`,
+    filename: `${libraryName}.min.js`,
     library: libraryName,
     libraryTarget: `umd`,
-    publicPath: `/dist/`,
-    umdNamedDefine: true
+    publicPath: `/dist`,
+    umdNamedDefine: false
   },
   resolve: {
     alias: {

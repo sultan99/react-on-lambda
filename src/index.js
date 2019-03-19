@@ -1,7 +1,8 @@
 import React from 'react'
+import styled from 'styled-components'
 import tags from './tags'
 
-export const fnToNode = args => (
+const fnToNode = args => (
   args && args.map(arg =>
     typeof arg === `function` ? arg() : arg
   )
@@ -40,7 +41,13 @@ const createElement = tagName => (...args) => {
   )
 }
 
-const lambda = comp => createElement(comp)
+const styledOrComponent = comp => (...args) => {
+  return args[0] && args[0].raw
+    ? createElement(styled(comp)(...args))
+    : createElement(comp)(...args)
+}
+
+const lambda = styledOrComponent
 
 lambda.fragment = (...nodes) => (
   React.createElement(React.Fragment, null, nodes)
@@ -53,7 +60,7 @@ lambda.compose = (...fns) => arg => (
 )
 
 tags.forEach(tag =>
-  lambda[tag] = createElement(tag)
+  lambda[tag] = styledOrComponent(tag)
 )
 
 export default lambda
