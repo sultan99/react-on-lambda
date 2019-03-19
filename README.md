@@ -6,7 +6,7 @@ The library written on top of [React](https://github.com/facebook/react/) librar
 You may love JSX because it has simple, declarative and html like syntax - nice extension to ECMAScript.
 Unfortunately, despite these cool features you deal with text.
 Most of time you find yourself doing js code inside html, and inside that html you make again another js code.
-You cannot just reuse your jsx strings without wrapping it by functions.
+You can't just reuse your jsx strings without wrapping it by functions.
 
 **So why not to use functions instead jsx strings?**
 
@@ -21,8 +21,8 @@ Get all benefits of functional programming:
 ## Features
 - fun functional programming
 - less & clean coding
-- easy to learn (15 minutes)
-- minimal size (0.7kb)
+- easy to learn
+- minimal size (2,68kb)
 
 
 
@@ -79,7 +79,7 @@ Later will be provided.
 ```js
 import λ from 'react-on-lambda'
 
-const greet = λ.h1`
+const header = λ.h1`
   color: #ff813f;
   font-size: 22px;
 `
@@ -107,6 +107,6 @@ Built with [react](https://github.com/facebook/react/), [styled-components](http
 
 
 ## Support
-<a href="buymeacoff.ee/KGEzqayNQ" target="_blank">
+<a href="https://www.buymeacoffee.com/KGEzqayNQ" target="_blank">
   <img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg" alt="Buy Me A Coffee"/>
 </a>

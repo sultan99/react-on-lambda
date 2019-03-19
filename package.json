@@ -5,7 +5,10 @@
   "sideEffects": false,
   "scripts": {
     "test": "jest --watch",
-    "build": ""
+    "build": "webpack",
+    "prebuild": "rimraf ./dist/**",
+    "prepare": "npm run build",
+    "publish-npm:beta": "npm publish --tag=next"
   },
   "author": "sultan99",
   "license": "MIT",
@@ -13,9 +16,9 @@
     "type": "git",
     "url": "https://github.com/sultan99/react-on-lambda"
   },
-  "dependencies": {
-    "react": "^16.8.4",
-    "styled-components": "^4.1.3"
+  "peerDependencies": {
+    "react": ">=16.8.4",
+    "styled-components": ">=4.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
@@ -27,6 +30,11 @@
     "eslint-plugin-better-styled-components": "^1.1.1",
     "eslint-plugin-jest": "^22.3.2",
     "eslint-plugin-react": "^7.12.4",
-    "jest": "^24.5.0"
+    "jest": "^24.5.0",
+    "react": ">=16.8.4",
+    "rimraf": "^2.6.3",
+    "styled-components": ">=4.1.3",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   }
 }
