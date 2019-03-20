@@ -1,15 +1,13 @@
 const path = require(`path`)
-const pkg = require(`./package.json`)
 
-const libraryName = pkg.name
 const rootPath = dir => path.resolve(__dirname, dir)
 
 module.exports = {
   mode: `production`,
   output: {
     path: rootPath(`./dist`),
-    filename: `${libraryName}.min.js`,
-    library: libraryName,
+    filename: `react-on-lambda.min.js`,
+    library: `λ`,
     libraryTarget: `umd`,
     publicPath: `/dist`,
     umdNamedDefine: false
