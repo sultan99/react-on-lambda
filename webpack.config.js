@@ -6,7 +6,7 @@ module.exports = {
   mode: `production`,
   output: {
     path: rootPath(`./dist`),
-    filename: `react-on-lambdaλ.min.js`,
+    filename: `react-on-lambda.min.js`,
     library: `λ`,
     libraryTarget: `umd`,
     publicPath: `/dist`,
