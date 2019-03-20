@@ -1,30 +1,29 @@
 import React from 'react'
-import styled from 'styled-components'
-import tags from './tags'
 
-const fnToNode = args => (
+export const fnToNode = args => (
   args && args.map(arg =>
     typeof arg === `function` ? arg() : arg
   )
 )
 
 const createElement = tagName => (...args) => {
-  const [props, ...children] = args
-  const isObject = props !== null && typeof props === `object`
-  const isArray = Array.isArray(props)
-  const isFunction = typeof props === `function`
-  const isNode = isObject && props.$$typeof
-  const isString = typeof props === `string`
-  const isProps = isObject && !isNode && !isArray
-
   if (!args.length) {
     return React.createElement(tagName)
   }
+  const [props, ...children] = args
+  const isObject = props !== null && typeof props === `object`
+  const isArray = Array.isArray(props)
+  const isNode = isObject && props.$$typeof
+  const isProps = isObject && !isNode && !isArray
+
   if (isProps && !children.length) {
     return (...childs) => React.createElement(
       tagName, ...fnToNode([props, ...childs])
     )
   }
+
+  const isFunction = typeof props === `function`
+  const isString = typeof props === `string`
   if (isNode || isFunction || isString) {
     return React.createElement(
       tagName, null, ...fnToNode(args)
@@ -41,13 +40,7 @@ const createElement = tagName => (...args) => {
   )
 }
 
-const styledOrComponent = comp => (...args) => {
-  return args[0] && args[0].raw
-    ? createElement(styled(comp)(...args))
-    : createElement(comp)(...args)
-}
-
-const lambda = styledOrComponent
+const lambda = comp => createElement(comp)
 
 lambda.fragment = (...nodes) => (
   React.createElement(React.Fragment, null, nodes)
@@ -59,8 +52,12 @@ lambda.compose = (...fns) => arg => (
   )
 )
 
-tags.forEach(tag =>
-  lambda[tag] = styledOrComponent(tag)
-)
+const handler = {
+  get(obj, prop) {
+    return prop in obj
+      ? obj[prop]
+      : createElement(prop)
+  }
+}
 
-export default lambda
+export default new Proxy(lambda, handler)

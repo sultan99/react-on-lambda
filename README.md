@@ -22,7 +22,7 @@ Get all benefits of functional programming:
 - fun functional programming
 - less & clean coding
 - easy to learn
-- minimal size (~1.3kb)
+- minimal size (~1kb)
 
 
 
@@ -61,7 +61,7 @@ render(
 
 ## Getting started
 
-Next version `styled-components` will be optional.
+The next version `styled-components` will be optional.
 
 ```sh
 $ npm i react-on-lambda react styled-components -S
