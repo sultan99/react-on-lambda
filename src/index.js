@@ -1,6 +1,7 @@
 import React from 'react'
+import styled from 'styled-components'
 
-export const fnToNode = args => (
+const fnToNode = args => (
   args && args.map(arg =>
     typeof arg === `function` ? arg() : arg
   )
@@ -10,6 +11,7 @@ const createElement = tagName => (...args) => {
   if (!args.length) {
     return React.createElement(tagName)
   }
+
   const [props, ...children] = args
   const isObject = props !== null && typeof props === `object`
   const isArray = Array.isArray(props)
@@ -24,6 +26,7 @@ const createElement = tagName => (...args) => {
 
   const isFunction = typeof props === `function`
   const isString = typeof props === `string`
+
   if (isNode || isFunction || isString) {
     return React.createElement(
       tagName, null, ...fnToNode(args)
@@ -40,7 +43,13 @@ const createElement = tagName => (...args) => {
   )
 }
 
-const lambda = comp => createElement(comp)
+const styledOrComponent = comp => (...args) => {
+  return args[0] && args[0].raw
+    ? createElement(styled(comp)(...args))
+    : createElement(comp)(...args)
+}
+
+const lambda = styledOrComponent
 
 lambda.fragment = (...nodes) => (
   React.createElement(React.Fragment, null, nodes)
@@ -56,7 +65,7 @@ const handler = {
   get(obj, prop) {
     return prop in obj
       ? obj[prop]
-      : createElement(prop)
+      : styledOrComponent(prop)
   }
 }
 

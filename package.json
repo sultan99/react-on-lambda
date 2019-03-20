@@ -1,6 +1,6 @@
 {
   "name": "react-on-lambda",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "no more jsx",
   "sideEffects": false,
   "scripts": {
@@ -33,7 +33,8 @@
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "rimraf": "^2.6.3",
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0"
+    "styled-components": "^4.1.3",
+    "webpack-cli": "^3.3.0",
+    "webpack": "^4.29.6"
   }
 }
