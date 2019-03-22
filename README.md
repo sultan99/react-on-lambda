@@ -6,7 +6,7 @@ The library written on top of [React](https://github.com/facebook/react/) librar
 You may love JSX because it has simple, declarative and html like syntax - nice extension to ECMAScript.
 Unfortunately, despite these cool features you deal with text.
 Most of time you find yourself doing js code inside html, and inside that html you make again another js code.
-You can't just reuse your jsx strings without wrapping it by functions.
+You can't just reuse your jsx strings without wrapping them by functions.
 
 **So why not to use functions instead jsx strings?**
 
@@ -38,7 +38,7 @@ import {render} from 'react-dom'
 const postLink = λ.a({href: `/posts/123`})
 
 const title = λ.compose(
-  λ.h1({className: `post-title`}),
+  λ.h1({class: `post-title`}), // can be λ.h1({className: `post-title`})
   postLink
 )
 
