@@ -1,5 +1,4 @@
 # React on lambda
-
 It is not yet another react-like library.
 The library written on top of [React](https://github.com/facebook/react/) library, but with no jsx in usage.
 
@@ -16,18 +15,18 @@ Get all benefits of functional programming:
  - use currying functions
  - make test easier
  - write compact and clean code
-
+<br/>
+<br/>
 
 ## Features
 - fun functional programming
 - less & clean coding
 - easy to learn
 - minimal size (~1kb)
-
-
+<br/>
+<br/>
 
 ## How It Works
-
 You can find a whole application example [here](https://github.com/sultan99/rol-usage).
 
 
@@ -56,11 +55,11 @@ render(
   post,
   document.getElementById(`app`)
 )
-
 ```
+<br/>
+<br/>
 
 ## Getting started
-
 The next version `styled-components` will be optional.
 
 ```sh
@@ -72,10 +71,13 @@ or install with yarn:
 ```sh
 $ yarn add react-on-lambda react styled-components
 ```
+<br/>
+<br/>
 
 ## API documentation
-Later will be provided.
+Later will be provided, at this moment some snippets.
 
+**Styling**
 ```js
 import λ from 'react-on-lambda'
 
@@ -92,18 +94,56 @@ const app = λ.div(
 )
 
 export default app
-
 ```
+<br/>
 
-## Who Uses React on Lambda
+**Helper function mapKey**
+```js
+const pages = [`Home page`, `Profile`, `About`]
 
-No body yet...😅
+λ.ul(
+  λ.mapKey(λ.ul, pages)
+)
 
-**Be first!**
+// will equal to jsx ⤵
+<ul>
+  {pages.map((item, key) = >
+    <li key={key}>
+      {item}
+    </li>
+  )}
+</ul>
+```
+<br/>
 
+**Composition of pluck, mapKey**
+```js
+const data = [
+  {id: 123, name: `foo`},
+  {id: 123, name: `bar`},
+]
 
-## Credits
-Built with [react](https://github.com/facebook/react/), [styled-components](https://www.styled-components.com/) and ❤︎ by [Sultan Arziyev](https://github.com/sultan99).
+const userList = λ.compose(
+  λ.div,
+  λ.ul,
+  λ.mapKey(λ.li),
+  λ.pluck(`name`, `id`)
+)
+
+userList(data) // will equal to jsx ⤵
+
+<div>
+  <ul>
+    {data.map(user = >
+      <li key={user.id}>
+        {user.name}
+      </li>
+    )}
+  </ul>
+</div>
+```
+<br/>
+<br/>
 
 
 ## Support
