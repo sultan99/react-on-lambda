@@ -74,13 +74,34 @@ describe(`Core functions`, () => {
 
   test(`λ.div(map)`, () => {
     const items = [`milk`, `tea`]
-    const input = λ.ul(
-      items.map((item, key) => λ.li({key}, item))
+    const menu = λ.compose(
+      λ.ul,
+      λ.each(λ.li)
     )
     const result = (
       <ul>
-        {items.map((item, key) => <li key={key}>{item}</li>)}
+        {items.map((item, key) =>
+          <li key={key}>{item}</li>
+        )}
       </ul>
+    )
+
+    expect(menu(items)).toEqual(result)
+  })
+
+  test(`λ.div(element, map, λ.fn)`, () => {
+    const tags = [`react`, `λambda`]
+    const input = λ.div(
+      λ.h1(`Tag Cloud`),
+      λ.each(λ.span, tags),
+      λ.div({className: `footer`})
+    )
+    const result = (
+      <div>
+        <h1>Tag Cloud</h1>
+        {tags.map((item, key) => <span key={key}>{item}</span>)}
+        <div className='footer'/>
+      </div>
     )
 
     expect(input).toEqual(result)
@@ -117,5 +138,21 @@ describe(`Helper functions`, () => {
     )
 
     expect(input(`Read more`)).toEqual(result)
+  })
+
+  test(`λ.map(λ.fn, array)`, () => {
+    const items = [`home`, `about`]
+    const menu = λ.ul(
+      λ.each(λ.li, items)
+    )
+    const result = (
+      <ul>
+        {items.map((item, index) =>
+          <li key={index}>{item}</li>
+        )}
+      </ul>
+    )
+
+    expect(menu).toEqual(result)
   })
 })

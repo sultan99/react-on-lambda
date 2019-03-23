@@ -1,45 +1,35 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const fnToNode = args => (
+const callFns = args => (
   args && args.map(arg =>
     typeof arg === `function` ? arg() : arg
   )
 )
 
 const createElement = tagName => (...args) => {
-  if (!args.length) {
-    return React.createElement(tagName)
-  }
-
   const [props, ...children] = args
   const isObject = props !== null && typeof props === `object`
   const isArray = Array.isArray(props)
   const isNode = isObject && props.$$typeof
   const isProps = isObject && !isNode && !isArray
 
+  if (!args.length) {
+    return React.createElement(tagName)
+  }
   if (isProps && !children.length) {
     return (...childs) => React.createElement(
-      tagName, ...fnToNode([props, ...childs])
+      tagName, ...callFns([props, ...childs])
     )
   }
-
-  const isFunction = typeof props === `function`
-  const isString = typeof props === `string`
-
-  if (isNode || isFunction || isString) {
+  if (!isProps) {
     return React.createElement(
-      tagName, null, ...fnToNode(args)
-    )
-  }
-  if (isArray) {
-    return React.createElement(
-      tagName, null, fnToNode(props)
+      tagName, null, ...callFns(args)
     )
   }
 
   return React.createElement(
-    tagName, ...fnToNode(args)
+    tagName, ...callFns(args)
   )
 }
 
@@ -60,6 +50,13 @@ lambda.compose = (...fns) => arg => (
     (acc, fn) => fn(acc), arg
   )
 )
+
+lambda.each = (el, items) => {
+  const fn = (item, key) => el({key}, item)
+  return items
+    ? items.map(fn)
+    : list => list.map(fn)
+}
 
 const handler = {
   get(obj, prop) {
