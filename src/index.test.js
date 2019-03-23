@@ -72,11 +72,11 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 
-  test(`λ.div(map)`, () => {
+  test(`λ.div(array)`, () => {
     const items = [`milk`, `tea`]
     const menu = λ.compose(
       λ.ul,
-      λ.each(λ.li)
+      λ.mapKey(λ.li),
     )
     const result = (
       <ul>
@@ -89,17 +89,19 @@ describe(`Core functions`, () => {
     expect(menu(items)).toEqual(result)
   })
 
-  test(`λ.div(element, map, λ.fn)`, () => {
+  test(`λ.div(element, array, λ.fn)`, () => {
     const tags = [`react`, `λambda`]
     const input = λ.div(
       λ.h1(`Tag Cloud`),
-      λ.each(λ.span, tags),
+      λ.mapKey(λ.span, tags),
       λ.div({className: `footer`})
     )
     const result = (
       <div>
         <h1>Tag Cloud</h1>
-        {tags.map((item, key) => <span key={key}>{item}</span>)}
+        {tags.map((item, key) =>
+          <span key={key}>{item}</span>
+        )}
         <div className='footer'/>
       </div>
     )
@@ -108,7 +110,7 @@ describe(`Core functions`, () => {
   })
 })
 
-describe(`Helper functions`, () => {
+describe(`Helper function compose`, () => {
   test(`λ.compose() => fn`, () => {
     expect(typeof λ.compose()).toBe(`function`)
   })
@@ -139,11 +141,14 @@ describe(`Helper functions`, () => {
 
     expect(input(`Read more`)).toEqual(result)
   })
+})
 
-  test(`λ.map(λ.fn, array)`, () => {
-    const items = [`home`, `about`]
+describe(`Helper function mapKey`, () => {
+  const items = [`home`, `about`]
+
+  test(`λ.mapKey(λ.fn, array)`, () => {
     const menu = λ.ul(
-      λ.each(λ.li, items)
+      λ.mapKey(λ.li, items)
     )
     const result = (
       <ul>
@@ -154,5 +159,74 @@ describe(`Helper functions`, () => {
     )
 
     expect(menu).toEqual(result)
+  })
+
+  test(`λ.mapKey(λ.fn)(array)`, () => {
+    const menu = λ.ul(
+      λ.mapKey(λ.li)(items)
+    )
+    const result = (
+      <ul>
+        {items.map((item, index) =>
+          <li key={index}>{item}</li>
+        )}
+      </ul>
+    )
+
+    expect(menu).toEqual(result)
+  })
+})
+
+describe(`Helper function pluck`, () => {
+  const users = [
+    {id: 123, name: `foo`},
+    {id: 124, name: `bar`}
+  ]
+  const flatData = [[`foo`, 123], [`bar`, 124]]
+
+  test(`λ.pluck(value, key, list)`, () => {
+    const input = λ.pluck(`name`, `id`, users)
+
+    expect(input).toEqual(flatData)
+  })
+
+  test(`λ.pluck(value, key)(list)`, () => {
+    const input = λ.pluck(`name`, `id`)
+
+    expect(input(users)).toEqual(flatData)
+  })
+
+  test(`λ.pluck(value, key)(list) with compose`, () => {
+    const input = λ.compose(
+      λ.ul,
+      λ.mapKey(λ.li),
+      λ.pluck(`name`, `id`)
+    )
+    const result = (
+      <ul>
+        {users.map(user =>
+          <li key={user.id}>{user.name}</li>
+        )}
+      </ul>
+    )
+
+    expect(input(users)).toEqual(result)
+  })
+
+  test(`λ.pluck(value)(list) with compose`, () => {
+    const input = λ.compose(
+      λ.ul,
+      λ.mapKey(λ.li),
+      λ.pluck(`name`)
+    )
+    const result = (
+      <ul>
+        {users.map((user, index) =>
+          <li key={index}>{user.name}</li>
+        )}
+      </ul>
+    )
+
+    expect(input(users)).toEqual(result)
   })
 })

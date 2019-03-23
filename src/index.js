@@ -51,11 +51,24 @@ lambda.compose = (...fns) => arg => (
   )
 )
 
-lambda.each = (el, items) => {
-  const fn = (item, key) => el({key}, item)
+const addKey = el => (item, index) => {
+  const [value, key] = Array.isArray(item)
+    ? item
+    : [item, index]
+  return el({key}, value)
+}
+
+lambda.mapKey = (el, items) => {
   return items
-    ? items.map(fn)
-    : list => list.map(fn)
+    ? items.map(addKey(el))
+    : list => list.map(addKey(el))
+}
+
+lambda.pluck = (value, key, list) => {
+  const fn = items => key
+    ? items.map(item => [item[value], item[key]])
+    : items.map((item, index) => [item[value], index])
+  return list ? fn(list) : fn
 }
 
 const handler = {
