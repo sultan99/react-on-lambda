@@ -230,3 +230,42 @@ describe(`Helper function pluck`, () => {
     expect(input(users)).toEqual(result)
   })
 })
+
+describe(`Helper function showIf`, () => {
+  const OK = true
+  const NO = false
+
+  test(`λ.showIf(true, a) -> a`, () => {
+    const input = λ.showIf(OK, λ.span(`Hello World!`))
+    const result = <span>Hello World!</span>
+
+    expect(input).toEqual(result)
+  })
+
+  test(`λ.showIf(false, a) -> null`, () => {
+    const input = λ.showIf(NO, λ.span(`Hello World!`))
+    const result = null
+
+    expect(input).toEqual(result)
+  })
+
+  test(`λ.showIf(true, a, b) -> a`, () => {
+    const input = λ.showIf(OK,
+      λ.span(`Hello World!`),
+      λ.span(`Loading...`)
+    )
+    const result = <span>Hello World!</span>
+
+    expect(input).toEqual(result)
+  })
+
+  test(`λ.showIf(false, a, b) -> b`, () => {
+    const input = λ.showIf(NO,
+      λ.span(`Hello World!`),
+      λ.span(`Loading...`)
+    )
+    const result = <span>Loading...</span>
+
+    expect(input).toEqual(result)
+  })
+})

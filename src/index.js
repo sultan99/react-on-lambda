@@ -71,6 +71,10 @@ lambda.pluck = (value, key, list) => {
   return list ? fn(list) : fn
 }
 
+lambda.showIf = (isOK, one, two) => (
+  isOK && one || two || null
+)
+
 const handler = {
   get(obj, prop) {
     return prop in obj

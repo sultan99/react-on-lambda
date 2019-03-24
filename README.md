@@ -140,6 +140,18 @@ userList(data)
 </div>
 ```
 <br/>
+
+**showIf**
+
+```js
+const app = props => λ.div(
+  λ.showIf(!props.isLoading,
+    λ.h1(`Welcome to React on λambda!`),
+    λ.span(`Please wait, page is loading...`)
+  )
+)
+```
+<br/>
 <br/>
 
 ## Support
