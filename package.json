@@ -6,7 +6,7 @@
   "scripts": {
     "start": "jest --watch",
     "test": "jest --coverage",
-    "lint": "eslint ./src",
+    "lint": "eslint src/**",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "prepare": "npm run build",
     "build": "webpack -p",

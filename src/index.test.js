@@ -1,5 +1,5 @@
 import React from 'react'
-import λ from './index.js'
+import λ, {styledOrComponent} from './index.js'
 
 describe(`Core functions`, () => {
   test(`λ.div -> fn`, () => {
@@ -282,5 +282,22 @@ describe(`Helper function showIf`, () => {
     const result = <span>Loading...</span>
 
     expect(input).toEqual(result)
+  })
+})
+
+describe(`Misc function styledOrComponent`, () => {
+  test(`styledOrComponent(string)`, () => {
+    const input = styledOrComponent(`div`)(`Hello World!`)
+    const result = <div>Hello World!</div>
+
+    expect(input).toEqual(result)
+  })
+
+  test(`styledOrComponent styling -> fun`, () => {
+    const div = styledOrComponent(`div`)`
+      color: read;
+      font-size: 18px;
+    `
+    expect(typeof div).toBe(`function`)
   })
 })

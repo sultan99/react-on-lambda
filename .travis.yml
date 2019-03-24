@@ -15,3 +15,4 @@ install:
 script:
 - npm test
 - npm run coveralls
+- npm run lint

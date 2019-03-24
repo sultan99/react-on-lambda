@@ -33,10 +33,17 @@ const createElement = tagName => (...args) => {
   )
 }
 
-const styledOrComponent = comp => (...args) => {
+export const styledOrComponent = comp => (...args) => {
   return args[0] && args[0].raw
     ? createElement(styled(comp)(...args))
     : createElement(comp)(...args)
+}
+
+const addKey = el => (item, index) => {
+  const [value, key] = Array.isArray(item)
+    ? item
+    : [item, index]
+  return el({key}, value)
 }
 
 const lambda = styledOrComponent
@@ -50,13 +57,6 @@ lambda.compose = (...fns) => arg => (
     (acc, fn) => fn(acc), arg
   )
 )
-
-const addKey = el => (item, index) => {
-  const [value, key] = Array.isArray(item)
-    ? item
-    : [item, index]
-  return el({key}, value)
-}
 
 lambda.mapKey = (el, items) => {
   return items
