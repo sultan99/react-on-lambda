@@ -1,34 +1,29 @@
 # React on lambda
-It is not yet another react-like library.
-The library written on top of [React](https://github.com/facebook/react/) library, but with no jsx in usage.
+A tiny JavaScript library which allows to use React without JSX and without pain.
 
-You may love JSX because it has simple, declarative and html like syntax - nice extension to ECMAScript.
+JSX has simple, declarative and html-like syntax, nice extension to ECMAScript.
 Unfortunately, despite these cool features you deal with text.
-Most of time you find yourself doing js code inside html, and inside that html you make again another js code.
-You can't just reuse your jsx strings without wrapping them by functions.
+Most of time you find yourself doing js code inside html, and inside that html you make again another js code and so on.
+In order to reuse some jsx fragments of code you have to wrap them by functions. So then you come to the main question:
 
-**So why not to use functions instead jsx strings?**
+**Why not just use functions instead of jsx strings?**
 
-Get all benefits of functional programming:
- - split your code into more reusable parts
- - compose your functions
- - use currying functions
- - make test easier
- - write compact and clean code
-<br/>
+And get all benefits of functional programming:
+ - splitting code into more reusable parts
+ - curry an function composition
+ - easier testing & debugging
+ - compact and clean code
 <br/>
 
 ## Features
 - fun functional programming
 - less & clean coding
-- easy to learn
+- no need of [Babel](https://babeljs.io/)
 - minimal size (~1kb)
-<br/>
 <br/>
 
 ## How It Works
 You can find a whole application example [here](https://github.com/sultan99/rol-usage).
-
 
 ```js
 import λ from 'react-on-lambda'
@@ -37,7 +32,7 @@ import {render} from 'react-dom'
 const postLink = λ.a({href: `/posts/123`})
 
 const title = λ.compose(
-  λ.h1({class: `post-title`}), // can be λ.h1({className: `post-title`})
+  λ.h1({class: `post-title`}), // or λ.h1({className: `post-title`})
   postLink
 )
 
@@ -57,7 +52,6 @@ render(
 )
 ```
 <br/>
-<br/>
 
 ## Getting started
 The next version `styled-components` will be optional.
@@ -72,12 +66,12 @@ or install with yarn:
 $ yarn add react-on-lambda react styled-components
 ```
 <br/>
-<br/>
 
 ## API documentation
-Later will be provided, at this moment some snippets.
+Full documentation will be provided later, at this moment some snippets.
 
 **Styling**
+
 ```js
 import λ from 'react-on-lambda'
 
@@ -98,14 +92,15 @@ export default app
 <br/>
 
 **Helper function mapKey**
+
 ```js
-const pages = [`Home page`, `Profile`, `About`]
+const pages = [`Home page`, `Portfolio`, `About`]
 
 λ.ul(
   λ.mapKey(λ.ul, pages)
 )
 
-// will equal to jsx ⤵
+// jsx equivalent
 <ul>
   {pages.map((item, key) = >
     <li key={key}>
@@ -116,11 +111,12 @@ const pages = [`Home page`, `Profile`, `About`]
 ```
 <br/>
 
-**Composition of pluck, mapKey**
+**Composition of pluck and mapKey**
+
 ```js
 const data = [
   {id: 123, name: `foo`},
-  {id: 123, name: `bar`},
+  {id: 124, name: `bar`},
 ]
 
 const userList = λ.compose(
@@ -130,8 +126,9 @@ const userList = λ.compose(
   λ.pluck(`name`, `id`)
 )
 
-userList(data) // will equal to jsx ⤵
+userList(data)
 
+// jsx equivalent
 <div>
   <ul>
     {data.map(user = >
@@ -144,7 +141,6 @@ userList(data) // will equal to jsx ⤵
 ```
 <br/>
 <br/>
-
 
 ## Support
 <a href="https://www.buymeacoffee.com/KGEzqayNQ" target="_blank">
