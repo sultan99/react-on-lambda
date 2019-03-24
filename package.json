@@ -4,10 +4,13 @@
   "description": "no more jsx",
   "sideEffects": false,
   "scripts": {
-    "test": "jest --watch",
+    "start": "jest --watch",
+    "test": "jest --coverage",
+    "lint": "eslint ./src",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "prepare": "npm run build",
     "build": "webpack -p",
-    "prebuild": "rimraf dist/**",
-    "prepare": "npm run build"
+    "prebuild": "rimraf dist/**"
   },
   "author": "sultan99",
   "license": "MIT",
@@ -25,6 +28,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.5.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.15.1",
     "eslint-plugin-better-styled-components": "^1.1.1",
     "eslint-plugin-jest": "^22.3.2",
@@ -34,7 +38,7 @@
     "react-dom": "^16.8.4",
     "rimraf": "^2.6.3",
     "styled-components": "^4.1.3",
-    "webpack-cli": "^3.3.0",
-    "webpack": "^4.29.6"
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   }
 }

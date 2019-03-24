@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1553414069513" clover="3.2.0">
+  <project timestamp="1553414069513" name="All files">
+    <metrics statements="39" coveredstatements="38" conditionals="37" coveredconditionals="36" methods="21" coveredmethods="20" elements="97" coveredelements="94" complexity="0" loc="39" ncloc="39" packages="1" files="1" classes="1"/>
+    <file name="index.js" path="C:\react-on-lambda\src\index.js">
+      <metrics statements="39" coveredstatements="38" conditionals="37" coveredconditionals="36" methods="21" coveredmethods="20"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="5" count="37" type="cond" truecount="2" falsecount="0"/>
+      <line num="6" count="54" type="cond" truecount="2" falsecount="0"/>
+      <line num="10" count="40" type="stmt"/>
+      <line num="11" count="40" type="stmt"/>
+      <line num="12" count="40" type="cond" truecount="2" falsecount="0"/>
+      <line num="13" count="40" type="stmt"/>
+      <line num="14" count="40" type="cond" truecount="2" falsecount="0"/>
+      <line num="15" count="40" type="cond" truecount="3" falsecount="0"/>
+      <line num="17" count="40" type="cond" truecount="2" falsecount="0"/>
+      <line num="18" count="2" type="stmt"/>
+      <line num="20" count="38" type="cond" truecount="4" falsecount="0"/>
+      <line num="21" count="5" type="stmt"/>
+      <line num="25" count="33" type="cond" truecount="2" falsecount="0"/>
+      <line num="26" count="20" type="stmt"/>
+      <line num="31" count="13" type="stmt"/>
+      <line num="36" count="35" type="stmt"/>
+      <line num="37" count="40" type="cond" truecount="3" falsecount="1"/>
+      <line num="42" count="1" type="stmt"/>
+      <line num="44" count="1" type="stmt"/>
+      <line num="45" count="0" type="stmt"/>
+      <line num="48" count="6" type="stmt"/>
+      <line num="49" count="5" type="stmt"/>
+      <line num="50" count="13" type="stmt"/>
+      <line num="54" count="6" type="stmt"/>
+      <line num="55" count="12" type="cond" truecount="2" falsecount="0"/>
+      <line num="58" count="12" type="stmt"/>
+      <line num="61" count="1" type="stmt"/>
+      <line num="62" count="6" type="cond" truecount="2" falsecount="0"/>
+      <line num="64" count="4" type="stmt"/>
+      <line num="67" count="1" type="stmt"/>
+      <line num="68" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="69" count="6" type="stmt"/>
+      <line num="70" count="2" type="stmt"/>
+      <line num="71" count="4" type="cond" truecount="2" falsecount="0"/>
+      <line num="74" count="1" type="stmt"/>
+      <line num="75" count="4" type="cond" truecount="4" falsecount="0"/>
+      <line num="78" count="1" type="stmt"/>
+      <line num="80" count="55" type="cond" truecount="2" falsecount="0"/>
+    </file>
+  </project>
+</coverage>

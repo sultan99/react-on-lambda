@@ -41,8 +41,8 @@ const styledOrComponent = comp => (...args) => {
 
 const lambda = styledOrComponent
 
-lambda.fragment = (...nodes) => (
-  React.createElement(React.Fragment, null, nodes)
+lambda.fragment = (...children) => (
+  React.createElement(React.Fragment, {children})
 )
 
 lambda.compose = (...fns) => arg => (

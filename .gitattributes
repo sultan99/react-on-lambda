@@ -15,8 +15,12 @@ yarn.lock merge=ours
 .gitignore text eol=lf
 
 # misc config
+.babelrc eol=lf
+.coveralls.yml eol=lf
 .editorconfig text eol=lf
 .eslintrc eol=lf
+.npmignore eol=lf
+.travis.yml eol=lf
 *.yaml text eol=lf
 *.yml text eol=lf
 

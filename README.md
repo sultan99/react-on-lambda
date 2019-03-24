@@ -1,19 +1,29 @@
-<h1>
-  <img src="./logo.svg" width="50" height="52"/>
-  React on lambda
-</h1>
-A tiny JavaScript library which allows to use React without JSX and without pain.
+<div align="center">
+  <img src="./logo.svg" width="180" height="180"/>
+</div>
+<br/>
+<br/>
+
+# React on lambda
+[![Build Status](https://travis-ci.org/sultan99/react-on-lambda.svg?branch=master)](https://travis-ci.org/sultan99/react-on-lambda)
+[![Coverage Status](https://coveralls.io/repos/github/sultan99/react-on-lambda/badge.svg?branch=master)](https://coveralls.io/github/sultan99/react-on-lambda?branch=master)
+[![GitHub license](https://img.shields.io/github/license/sultan99/react-on-lambda.svg)](https://github.com/sultan99/react-on-lambda/blob/master/LICENSE)
+
+> A tiny JavaScript library which allows to use React without JSX.
+
+<br/>
+
 
 JSX has simple, declarative and html-like syntax, nice extension to ECMAScript.
 Unfortunately, despite these cool features you deal with text.
 Most of time you find yourself doing js code inside html, and inside that html you make again another js code and so on.
 In order to reuse some jsx fragments of code you have to wrap them by functions. So then you come to the main question:
 
-**Why not just use functions instead of jsx strings?**
+#### Why not just use functions instead of jsx strings?
 
 And get all benefits of functional programming:
  - splitting code into more reusable parts
- - curry an function composition
+ - curry and function composition
  - easier testing & debugging
  - compact and clean code
 <br/>
@@ -21,11 +31,11 @@ And get all benefits of functional programming:
 ## Features
 - fun functional programming
 - less & clean coding
-- no need of [Babel](https://babeljs.io/)
+- no [babel](https://babeljs.io/), no JSX
 - minimal size (~1kb)
 <br/>
 
-## How It Works
+## Examples
 You can find a whole application example [here](https://github.com/sultan99/rol-usage).
 
 ```js

@@ -4,6 +4,8 @@
 .gitattributes
 .gitignore
 .log
+.travis.yml
+coverage
 node_modules
 src
 webpack.config.js

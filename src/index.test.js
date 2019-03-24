@@ -108,6 +108,21 @@ describe(`Core functions`, () => {
 
     expect(input).toEqual(result)
   })
+
+  test(`λ.fragment`, () => {
+    const input = λ.fragment(
+      λ.h1(`foo`),
+      λ.p(`bar`)
+    )
+    const result = (
+      <React.Fragment>
+        <h1>foo</h1>
+        <p>bar</p>
+      </React.Fragment>
+    )
+
+    expect(input).toEqual(result)
+  })
 })
 
 describe(`Helper function compose`, () => {
