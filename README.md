@@ -1,4 +1,7 @@
-# React on lambda
+<h1>
+  <img src="./logo.svg" width="50" height="52"/>
+  React on lambda
+</h1>
 A tiny JavaScript library which allows to use React without JSX and without pain.
 
 JSX has simple, declarative and html-like syntax, nice extension to ECMAScript.
