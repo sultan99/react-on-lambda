@@ -16,7 +16,6 @@ yarn.lock merge=ours
 
 # misc config
 .babelrc eol=lf
-.coveralls.yml eol=lf
 .editorconfig text eol=lf
 .eslintrc eol=lf
 .npmignore eol=lf
@@ -28,3 +27,10 @@ yarn.lock merge=ours
 *.md text eol=lf
 AUTHORS text
 LICENSE text
+
+# (binary is a macro for -text -diff)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

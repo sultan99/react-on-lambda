@@ -20,16 +20,16 @@ module.exports = {
   },
   externals: {
     react: {
+      root: `React`,
       commonjs: `react`,
       commonjs2: `react`,
       amd: `React`,
-      root: `React`
     },
     'styled-components': {
+      root: `styled`,
       commonjs: `styled-components`,
       commonjs2: `styled-components`,
       amd: `styled`,
-      root: `styled`
     }
   }
 }

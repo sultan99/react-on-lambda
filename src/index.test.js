@@ -1,15 +1,15 @@
 import React from 'react'
-import λ, {styledOrComponent} from './index.js'
+import λ from './index.js'
 
 describe(`Core functions`, () => {
   test(`λ.div -> fn`, () => {
-    expect(typeof λ.div).toBe(`function`)
+    expect(λ.div).toBeInstanceOf(Function)
   })
 
   test(`λ.div(props) -> fn`, () => {
     const div = λ.div({className: `app`})
 
-    expect(typeof div).toBe(`function`)
+    expect(div).toBeInstanceOf(Function)
   })
 
   test(`λ.div(props)`, () => {
@@ -127,7 +127,7 @@ describe(`Core functions`, () => {
 
 describe(`Helper function compose`, () => {
   test(`λ.compose() => fn`, () => {
-    expect(typeof λ.compose()).toBe(`function`)
+    expect(λ.compose()).toBeInstanceOf(Function)
   })
 
   test(`λ.compose math functions`, () => {
@@ -285,19 +285,20 @@ describe(`Helper function showIf`, () => {
   })
 })
 
-describe(`Misc function styledOrComponent`, () => {
-  test(`styledOrComponent(string)`, () => {
-    const input = styledOrComponent(`div`)(`Hello World!`)
-    const result = <div>Hello World!</div>
+describe(`Misc styling function`, () => {
+  const div = λ.div`
+    color: read;
+    font-size: 18px;
+  `
 
-    expect(input).toEqual(result)
+  test(`λ.div styling -> fun`, () => {
+    expect(div).toBeInstanceOf(Function)
   })
 
-  test(`styledOrComponent styling -> fun`, () => {
-    const div = styledOrComponent(`div`)`
-      color: read;
-      font-size: 18px;
-    `
-    expect(typeof div).toBe(`function`)
+  test(`λ.div string)`, () => {
+    const {styledComponentId} = div(`Hello World!`).type
+    const input = /^sc\-/.test(styledComponentId)
+
+    expect(input).toBe(true)
   })
 })

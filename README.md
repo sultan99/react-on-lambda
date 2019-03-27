@@ -1,5 +1,9 @@
 <div align="center">
-  <img src="./logo.svg" width="180" height="180"/>
+  <img src="./assets/logo.svg" width="150" height="150"/>
+  <br/>
+  <br/>
+  <br/>
+  <img src="./assets/comics.png"/>
 </div>
 <br/>
 <br/>
@@ -12,15 +16,14 @@
 )](https://unpkg.com/react-on-lambda@0.0.7/dist/react-on-lambda.min.js)
 [![GitHub license](https://img.shields.io/github/license/sultan99/react-on-lambda.svg)](https://github.com/sultan99/react-on-lambda/blob/master/LICENSE)
 
-> A tiny JavaScript library which allows to use React without JSX.
+> A tiny library which makes easy to use [React](https://github.com/facebook/react) without JSX.
 
 <br/>
-
 
 JSX has simple, declarative and html-like syntax, nice extension to ECMAScript.
 Unfortunately, despite these cool features you deal with text.
 Most of time you find yourself doing js code inside html, and inside that html you make again another js code and so on.
-In order to reuse some jsx fragments of code you have to wrap them by functions. So then you come to the main question:
+In order to reuse some jsx fragments you have to wrap them by functions. Then you may come to the main question:
 
 #### Why not just use functions instead of jsx strings?
 
@@ -41,8 +44,9 @@ And get all benefits of functional programming:
 ## Examples
 You can find a whole application example [here](https://github.com/sultan99/rol-usage).
 
+Read more info about symbol `λ` in the section: [editor configuration](#editor-configuration).
 ```js
-import λ from 'react-on-lambda'
+import λ from 'react-on-lambda' // or import l from 'react-on-lambda'
 import {render} from 'react-dom'
 
 const postLink = λ.a({href: `/posts/123`})
@@ -70,16 +74,16 @@ render(
 <br/>
 
 ## Getting started
-The next version `styled-components` will be optional.
+The primary you will need to install the `react-on-lambda` with `react`":
 
 ```sh
-$ npm i react-on-lambda react styled-components -S
+$ npm i react-on-lambda react -S
 ```
 
-or install with yarn:
+optionally you can to install `styled-components` if you are going to use it:
 
 ```sh
-$ yarn add react-on-lambda react styled-components
+$ npm i styled-components -S
 ```
 <br/>
 
@@ -87,7 +91,6 @@ $ yarn add react-on-lambda react styled-components
 Full documentation will be provided later, at this moment some snippets.
 
 **Styling**
-
 ```js
 import λ from 'react-on-lambda'
 
@@ -107,8 +110,18 @@ export default app
 ```
 <br/>
 
-**Helper function mapKey**
+**Function showIf**
+```js
+const app = props => λ.div(
+  λ.showIf(!props.isLoading,
+    λ.h1(`Welcome to React on λambda!`),
+    λ.span(`Please wait, page is loading...`)
+  )
+)
+```
+<br/>
 
+**Function mapKey**
 ```js
 const pages = [`Home page`, `Portfolio`, `About`]
 
@@ -128,7 +141,6 @@ const pages = [`Home page`, `Portfolio`, `About`]
 <br/>
 
 **Composition of pluck and mapKey**
-
 ```js
 const data = [
   {id: 123, name: `foo`},
@@ -157,16 +169,27 @@ userList(data)
 ```
 <br/>
 
-**showIf**
+## Editor configuration
+> Code highlighting in Atom
 
+<img src="./assets/snippet-atom.png" style="border-radius: 4px;"/>
+<br/>
+
+Personally I hate to use symbols `$` `_` it makes code look dirty and reminds me [Perl](https://regmedia.co.uk/2017/10/31/perl_code_example.png) or regular expression.
+I prefer to use Greek letter `λ` – short and meaningful.
+
+Of course you can use any identifier at your own choice:
 ```js
-const app = props => λ.div(
-  λ.showIf(!props.isLoading,
-    λ.h1(`Welcome to React on λambda!`),
-    λ.span(`Please wait, page is loading...`)
-  )
-)
+import l from 'react-on-lambda'
+// or 
+import {div, h1} from 'react-on-lambda'
+
 ```
+
+But if you liked `λ` you can setup hot key and CSS syntax highlighting following the instructions bellow:
+- [Github Atom](./assets/atom.md)
+- Microsoft VS Code (will be provided)
+
 <br/>
 <br/>
 

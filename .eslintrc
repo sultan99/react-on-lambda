@@ -26,7 +26,7 @@
     "key-spacing": ["error", {"beforeColon": false, "afterColon": true}],
     "keyword-spacing": ["error", {"before": true}],
     "linebreak-style": ["error", "unix"],
-    "max-len": [1, 100, 3],
+    "max-len": [1, 80, 3],
     "named": 0,
     "no-array-constructor": 2,
     "no-console": ["warn", {"allow": ["warn", "error", "info"]}],

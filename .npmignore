@@ -5,6 +5,7 @@
 .gitignore
 .log
 .travis.yml
+assets
 coverage
 node_modules
 src
