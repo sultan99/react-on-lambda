@@ -52,7 +52,7 @@ lambda.fragment = (...children) => (
 )
 
 lambda.compose = (...fns) => arg => (
-  fns.reverse().reduce(
+  fns.slice().reverse().reduce(
     (acc, fn) => fn(acc), arg
   )
 )

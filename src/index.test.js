@@ -139,6 +139,7 @@ describe(`Helper function compose`, () => {
       square,
       addOne
     )
+    input(1) // test for mutations
 
     expect(input(1)).toBe(3)
   })
@@ -153,6 +154,7 @@ describe(`Helper function compose`, () => {
         <a>Read more</a>
       </h1>
     )
+    input(`Read more`) // test for mutations
 
     expect(input(`Read more`)).toEqual(result)
   })

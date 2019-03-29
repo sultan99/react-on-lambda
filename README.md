@@ -74,7 +74,7 @@ render(
 <br/>
 
 ## Getting started
-The primary you will need to install the `react-on-lambda` with `react`":
+The primary you will need to install the `react-on-lambda` and `react`":
 
 ```sh
 $ npm i react-on-lambda react -S
@@ -186,7 +186,7 @@ import {div, h1} from 'react-on-lambda'
 
 ```
 
-But if you liked `λ` you can setup hot key and CSS syntax highlighting following the instructions bellow:
+If you like to try using `λ` you can setup hot key and CSS syntax highlighting following the instructions bellow:
 - [Github Atom](./assets/atom.md)
 - Microsoft VS Code (will be provided)
 
