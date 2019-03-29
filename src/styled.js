@@ -1,6 +1,7 @@
 let styled
 
 try {
+  require.resolve(`styled-components`)
   styled = require(`styled-components`).default || require(`styled-components`)
 }
 catch {

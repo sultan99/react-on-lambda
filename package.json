@@ -1,6 +1,6 @@
 {
   "name": "react-on-lambda",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "no more jsx",
   "sideEffects": false,
   "scripts": {
@@ -24,7 +24,9 @@
   "main": "dist/react-on-lambda.min.js",
   "module": "src/index.js",
   "peerDependencies": {
-    "react": ">=16.8.5",
+    "react": ">=16.8.5"
+  },
+  "optionalDependencies": {
     "styled-components": "^4.2.0"
   },
   "devDependencies": {
