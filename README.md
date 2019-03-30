@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/logo.svg" width="150" height="150"/>
+  <img src="./assets/logo.svg" width="110" height="110"/>
   <br/>
   <br/>
   <br/>
@@ -37,8 +37,28 @@ And get all benefits of functional programming:
 ## Features
 - fun functional programming
 - less & clean coding
-- no [babel](https://babeljs.io/), no JSX
+- output bundle size less ~22% than JSX
+- faster render and mount up to ~10% than JSX
+- no babel, can be run directly in browser
+- smooth integration to an existing React project with JSX
 - minimal size (~1kb)
+<br/>
+
+## Benchmarks
+**Render performance**
+- React on lambda: `8.50 ms`
+- JSX: `9.97 ms`
+
+Most of time RoL showed faster results from **3%** upto **10%** than JSX version.
+<br/>
+
+**Bundle size**
+- React on lambda: `2.03 KB`
+- JSX: `2.57 KB`
+
+Never trust advertisement, go and check yourself the 
+[measurement tests](https://github.com/sultan99/rol-vs-jsx).
+
 <br/>
 
 ## Examples
@@ -74,13 +94,13 @@ render(
 <br/>
 
 ## Getting started
-The primary you will need to install the `react-on-lambda` and `react`":
+The primary you will need to install the `react-on-lambda` and `react`:
 
 ```sh
 $ npm i react-on-lambda react -S
 ```
 
-optionally you can to install `styled-components` if you are going to use it:
+optionally you can install `styled-components` if you are going to use it:
 
 ```sh
 $ npm i styled-components -S
@@ -91,6 +111,10 @@ $ npm i styled-components -S
 Full documentation will be provided later, at this moment some snippets.
 
 **Styling**
+
+`λ` wraps [styled-componets](https://github.com/styled-components/styled-components) 
+and returns a function.
+
 ```js
 import λ from 'react-on-lambda'
 
