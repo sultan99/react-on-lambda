@@ -39,25 +39,24 @@ And get all benefits of functional programming:
 - less & clean coding
 - output bundle size less ~22% than JSX
 - faster render and mount up to ~10% than JSX
-- no babel, can be run directly in browser
+- no transpiler necessary, can be run directly in browser
 - smooth integration to an existing React project with JSX
-- minimal size (~1kb)
 <br/>
 
 ## Benchmarks
+[The project](https://github.com/sultan99/rol-vs-jsx) includes two applications written using 
+React on lambda and JSX for comparisons. The follow results were gained:
+
 **Render performance**
 - React on lambda: `8.50 ms`
 - JSX: `9.97 ms`
 
-Most of time RoL showed faster results from **3%** upto **10%** than JSX version.
+Most of time RoL showed faster results from **3%** up to **10%** than JSX version.
 <br/>
 
 **Bundle size**
 - React on lambda: `2.03 KB`
 - JSX: `2.57 KB`
-
-Never trust advertisement, go and check yourself the 
-[measurement tests](https://github.com/sultan99/rol-vs-jsx).
 
 <br/>
 
@@ -112,7 +111,7 @@ Full documentation will be provided later, at this moment some snippets.
 
 **Styling**
 
-`λ` wraps [styled-componets](https://github.com/styled-components/styled-components) 
+`λ` wraps [styled-components](https://github.com/styled-components/styled-components) 
 and returns a function.
 
 ```js
