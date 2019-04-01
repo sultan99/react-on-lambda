@@ -61,7 +61,11 @@ Most of time RoL showed faster results from **3%** up to **10%** than JSX versio
 <br/>
 
 ## Examples
-You can find a whole application example [here](https://github.com/sultan99/rol-usage).
+You can find a whole application as an example:
+ - [master branch](https://github.com/sultan99/rol-usage) with no state mangement
+ - [redux branch](https://github.com/sultan99/rol-usage/tree/redux) implimentation using redux
+
+<br/>
 
 Read more info about symbol `λ` in the section: [editor configuration](#editor-configuration).
 ```js
