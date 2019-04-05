@@ -158,6 +158,23 @@ describe(`Helper function compose`, () => {
 
     expect(input(`Read more`)).toEqual(result)
   })
+
+  test(`λ.compose narity`, () => {
+    const title = λ.compose(
+      λ.h1({className: `title`}),
+      λ.a
+    )
+    const result = (
+      <h1 className='title'>
+        <a className="no-link">
+          Read more
+        </a>
+      </h1>
+    )
+    const input = title({className: `no-link`}, `Read more`)
+
+    expect(input).toEqual(result)
+  })
 })
 
 describe(`Helper function mapKey`, () => {
@@ -287,14 +304,27 @@ describe(`Helper function showIf`, () => {
   })
 })
 
-describe(`Misc styling function`, () => {
+describe(`Misc styling functions`, () => {
   const div = λ.div`
     color: read;
     font-size: 18px;
   `
+  afterEach(() => {
+    jest.resetModules()
+  })
 
-  test(`λ.div styling -> fun`, () => {
-    expect(div).toBeInstanceOf(Function)
+  test(`styled-components is installed`, () => {
+    process.env.SC_NOT_INSTALLED = false
+    const styled = require(`./styled`).default
+
+    expect(styled).toBeInstanceOf(Function)
+  })
+
+  test(`styled-components is not installed`, () => {
+    process.env.SC_NOT_INSTALLED = true
+    const styled = require(`./styled`).default
+
+    expect(styled).toThrow(`Module not found: styled-components`)
   })
 
   test(`λ.div string)`, () => {

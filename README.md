@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="./assets/logo.svg" width="110" height="110"/>
+  <img src="https://github.com/sultan99/react-on-lambda/raw/gh-pages/logo.svg?sanitize=true" width="110" height="110"/>
   <br/>
   <br/>
   <br/>
-  <img src="./assets/comics.png"/>
+  <img src="https://raw.githubusercontent.com/sultan99/react-on-lambda/gh-pages/assets/comics.png"/>
 </div>
 <br/>
 <br/>
@@ -11,12 +11,12 @@
 # React on lambda
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/sultan99/react-on-lambda.svg)
 [![Build Status](https://travis-ci.org/sultan99/react-on-lambda.svg?branch=master)](https://travis-ci.org/sultan99/react-on-lambda)
-[![Coverage Status](https://coveralls.io/repos/github/sultan99/react-on-lambda/badge.svg?branch=master&service=github)](https://coveralls.io/github/sultan99/react-on-lambda?branch=master)
-[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.0.9/dist/react-on-lambda.min.js?compression=gzip
+[![Coverage Status](https://coveralls.io/repos/github/sultan99/react-on-lambda/badge.svg)](https://coveralls.io/github/sultan99/react-on-lambda)
+[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.0.20/dist/react-on-lambda.min.js?compression=gzip
 )](https://unpkg.com/react-on-lambda@0.0.7/dist/react-on-lambda.min.js)
 [![GitHub license](https://img.shields.io/github/license/sultan99/react-on-lambda.svg)](https://github.com/sultan99/react-on-lambda/blob/master/LICENSE)
 
-> A tiny library which makes easy to use [React](https://github.com/facebook/react) without JSX.
+> A tiny library that simplifies the use of [React](https://github.com/facebook/react) without JSX.
 
 <br/>
 
@@ -30,13 +30,13 @@ In order to reuse some jsx fragments you have to wrap them by functions. Then yo
 And get all benefits of functional programming:
  - splitting code into more reusable parts
  - curry and function composition
- - easier testing & debugging
+ - easier testing and debugging
  - compact and clean code
 <br/>
 
 ## Features
 - fun functional programming
-- less & clean coding
+- less and clean coding
 - output bundle size less ~22% than JSX
 - faster render and mount up to ~10% than JSX
 - no transpiler necessary, can be run directly in browser
@@ -58,12 +58,15 @@ Most of time RoL showed faster results from **3%** up to **10%** than JSX versio
 - React on lambda: `2.03 KB`
 - JSX: `2.57 KB`
 
+RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `1.4KB`.
+So the real advantage will be if application size is larger than 7KB.
+
 <br/>
 
 ## Examples
 You can find a whole application as an example:
- - [master branch](https://github.com/sultan99/rol-usage) with no state mangement
- - [redux branch](https://github.com/sultan99/rol-usage/tree/redux) implimentation using redux
+ - [master branch](https://github.com/sultan99/rol-usage) - no state management
+ - [redux branch](https://github.com/sultan99/rol-usage/tree/redux) - using [redux](https://redux.js.org/)
 
 <br/>
 
@@ -199,7 +202,7 @@ userList(data)
 ## Editor configuration
 > Code highlighting in Atom
 
-<img src="./assets/snippet-atom.png" style="border-radius: 4px;"/>
+<img src="https://raw.githubusercontent.com/sultan99/react-on-lambda/gh-pages/assets/snippet-atom.png" style="border-radius: 4px;"/>
 <br/>
 
 Personally I hate to use symbols `$` `_` it makes code look dirty and reminds me [Perl](https://regmedia.co.uk/2017/10/31/perl_code_example.png) or regular expression.
@@ -214,7 +217,7 @@ import {div, h1} from 'react-on-lambda'
 ```
 
 If you like to try using `λ` you can setup hot key and CSS syntax highlighting following the instructions bellow:
-- [Github Atom](./assets/atom.md)
+- [Github Atom](./atom.md)
 - Microsoft VS Code (will be provided)
 
 <br/>

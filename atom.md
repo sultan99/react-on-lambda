@@ -31,5 +31,5 @@ Now you can press alt + l to type `λ`
 4. In the settings of the package find `JavaScript Tagged Template Literal Grammar Extensions`
 5. Paste this regexp: `"(?:λ\.(?:[a-z|1-5])+|(?:λ\(\w+\)))":source.css.styled` to the input.
 
-<img src="./atom-settings.png" style="border-radius: 4px;"/>
+<img src="https://raw.githubusercontent.com/sultan99/react-on-lambda/gh-pages/assets/atom-settings.png" style="border-radius: 4px;"/>
 <br/>

@@ -51,9 +51,9 @@ lambda.fragment = (...children) => (
   React.createElement(React.Fragment, {children})
 )
 
-lambda.compose = (...fns) => arg => (
+lambda.compose = (...fns) => (...args) => (
   fns.slice().reverse().reduce(
-    (acc, fn) => fn(acc), arg
+    (acc, fn, idx) => !idx ? fn(...args) : fn(acc), null
   )
 )
 
