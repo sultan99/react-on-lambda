@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from './styled'
 
+const λTYPE = Symbol(`λ`)
+
 const isItProps = props => (
   props !== null
   && typeof props === `object`
@@ -19,6 +21,10 @@ const curry = fn => {
     ? fn(...x) : (...y) => next(...x, ...y)
   return next
 }
+
+const mapFunc = curry((fn, items) =>
+  items.map(fn)
+)
 
 const mapArray = curry((el, items) =>
   items.map((item, index) => {
@@ -89,15 +95,19 @@ lambda.mapKey = (x, ...args) => {
     return mapObject(keys, ...args)
   }
   if (typeof x === `function`) {
-    return mapArray(x, ...args)
+    return x.type === λTYPE
+      ? mapArray(x, ...args)
+      : mapFunc(x, ...args)
   }
   return mapObject(x, ...args)
 }
 
 const handler = {
-  get: (obj, prop) => (
-    prop in obj ? obj[prop] : lambda(prop)
-  )
+  get: (obj, prop) => {
+    const fn = prop in obj ? obj[prop] : lambda(prop)
+    fn.type = λTYPE
+    return fn
+  }
 }
 
 export default new Proxy(lambda, handler)

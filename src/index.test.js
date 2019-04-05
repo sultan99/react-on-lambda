@@ -326,6 +326,24 @@ describe(`Helper function mapKey`, () => {
 
     expect(menu(objItems)).toEqual(result)
   })
+
+  test(`λ.mapKey(func, array)`, () => {
+    const menu = λ.compose(
+      λ.ul,
+      λ.mapKey(item =>
+        λ.li({key: item.id}, item.text)
+      )
+    )
+    const result = (
+      <ul>
+        {objItems.map(item =>
+          <li key={item.id}>{item.text}</li>
+        )}
+      </ul>
+    )
+
+    expect(menu(objItems)).toEqual(result)
+  })
 })
 
 describe(`Misc styling functions`, () => {
