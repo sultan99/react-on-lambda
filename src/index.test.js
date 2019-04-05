@@ -2,6 +2,32 @@ import React from 'react'
 import λ from './index.js'
 
 describe(`Core functions`, () => {
+  test(`λ(comp) -> fn`, () => {
+    const title = () => λ.h1(`Hello World!`)
+
+    expect(λ(title)).toBeInstanceOf(Function)
+  })
+
+  test(`λ(comp, props) -> fn`, () => {
+    const title = props => λ.h1(props, `Hello World!`)
+
+    expect(λ(title, {id: 123})).toBeInstanceOf(Function)
+  })
+
+  test(`λ(comp, props, string)`, () => {
+    const Title = props => <h1 {...props}/>
+    const result = <Title id={123}>Hello World!</Title>
+
+    expect(λ(Title, {id: 123}, `Hello World!`)).toEqual(result)
+  })
+
+  test(`λ(comp)(props, string)`, () => {
+    const Title = props => <h1 {...props}/>
+    const result = <Title id={123}>Hello World!</Title>
+
+    expect(λ(Title)({id: 123}, `Hello World!`)).toEqual(result)
+  })
+
   test(`λ.div -> fn`, () => {
     expect(λ.div).toBeInstanceOf(Function)
   })
@@ -125,6 +151,55 @@ describe(`Core functions`, () => {
   })
 })
 
+describe(`Helper function curry`, () => {
+  test(`λ.curry(x)`, () => {
+    const f = x => `f: ${x}!`
+    const g = λ.curry(f)
+
+    expect(f(`Boo`)).toBe(g(`Boo`))
+  })
+
+  test(`λ.curry(x)(y)(z)`, () => {
+    const f = (x, y, z) => `f: ${x}, ${y}, ${z}!`
+    const g = λ.curry(f)
+    const input = g(1)(2)(3)
+
+    expect(input).toBe(f(1, 2, 3))
+  })
+
+  test(`λ.curry(x)(y, z)`, () => {
+    const f = (x, y, z) => `f: ${x}, ${y}, ${z}!`
+    const g = λ.curry(f)
+    const input = g(1)(2, 3)
+
+    expect(input).toBe(f(1, 2, 3))
+  })
+
+  test(`λ.curry(x, y, z)`, () => {
+    const f = (x, y, z) => `f: ${x}, ${y}, ${z}!`
+    const g = λ.curry(f)
+    const input = g(1, 2, 3)
+
+    expect(input).toBe(f(1, 2, 3))
+  })
+
+  test(`λ.curry(x, null, z)`, () => {
+    const f = (x, y, z) => `f: ${x}, ${y}, ${z}!`
+    const g = λ.curry(f)
+    const input = g(1, null, 3)
+
+    expect(input).toBe(f(1, null, 3))
+  })
+
+  test(`λ.curry(...args)`, () => {
+    const f = (...args) => args.length
+    const g = λ.curry(f)
+    const input = g(1)
+
+    expect(input).toBe(1)
+  })
+})
+
 describe(`Helper function compose`, () => {
   test(`λ.compose() => fn`, () => {
     expect(λ.compose()).toBeInstanceOf(Function)
@@ -178,129 +253,78 @@ describe(`Helper function compose`, () => {
 })
 
 describe(`Helper function mapKey`, () => {
-  const items = [`home`, `about`]
-
-  test(`λ.mapKey(λ.fn, array)`, () => {
-    const menu = λ.ul(
-      λ.mapKey(λ.li, items)
-    )
-    const result = (
-      <ul>
-        {items.map((item, index) =>
-          <li key={index}>{item}</li>
-        )}
-      </ul>
-    )
-
-    expect(menu).toEqual(result)
-  })
-
-  test(`λ.mapKey(λ.fn)(array)`, () => {
-    const menu = λ.ul(
-      λ.mapKey(λ.li)(items)
-    )
-    const result = (
-      <ul>
-        {items.map((item, index) =>
-          <li key={index}>{item}</li>
-        )}
-      </ul>
-    )
-
-    expect(menu).toEqual(result)
-  })
-})
-
-describe(`Helper function pluck`, () => {
-  const users = [
-    {id: 123, name: `foo`},
-    {id: 124, name: `bar`}
+  const objItems = [
+    {id: 2, text: `Foo`},
+    {id: 6, text: `Bar`},
   ]
-  const flatData = [[`foo`, 123], [`bar`, 124]]
 
-  test(`λ.pluck(value, key, list)`, () => {
-    const input = λ.pluck(`name`, `id`, users)
-
-    expect(input).toEqual(flatData)
-  })
-
-  test(`λ.pluck(value, key)(list)`, () => {
-    const input = λ.pluck(`name`, `id`)
-
-    expect(input(users)).toEqual(flatData)
-  })
-
-  test(`λ.pluck(value, key)(list) with compose`, () => {
-    const input = λ.compose(
-      λ.ul,
-      λ.mapKey(λ.li),
-      λ.pluck(`name`, `id`)
+  test(`λ.mapKey(keys, λ.fn, array)`, () => {
+    const menu = λ.ul(
+      λ.mapKey({key: `id`, children: `text`},
+        λ.li,
+        objItems
+      )
     )
     const result = (
       <ul>
-        {users.map(user =>
-          <li key={user.id}>{user.name}</li>
+        {objItems.map(item =>
+          <li key={item.id}>{item.text}</li>
         )}
       </ul>
     )
 
-    expect(input(users)).toEqual(result)
+    expect(menu).toEqual(result)
   })
 
-  test(`λ.pluck(value)(list) with compose`, () => {
-    const input = λ.compose(
-      λ.ul,
-      λ.mapKey(λ.li),
-      λ.pluck(`name`)
+  test(`λ.mapKey(keys)(λ.fn)(array)`, () => {
+    const menu = λ.ul(
+      λ.mapKey({key: `id`, children: `text`})(λ.li)(objItems)
     )
     const result = (
       <ul>
-        {users.map((user, index) =>
-          <li key={index}>{user.name}</li>
+        {objItems.map(item =>
+          <li key={item.id}>{item.text}</li>
         )}
       </ul>
     )
 
-    expect(input(users)).toEqual(result)
-  })
-})
-
-describe(`Helper function showIf`, () => {
-  const OK = true
-  const NO = false
-
-  test(`λ.showIf(true, a) -> a`, () => {
-    const input = λ.showIf(OK, λ.span(`Hello World!`))
-    const result = <span>Hello World!</span>
-
-    expect(input).toEqual(result)
+    expect(menu).toEqual(result)
   })
 
-  test(`λ.showIf(false, a) -> null`, () => {
-    const input = λ.showIf(NO, λ.span(`Hello World!`))
-    const result = null
-
-    expect(input).toEqual(result)
-  })
-
-  test(`λ.showIf(true, a, b) -> a`, () => {
-    const input = λ.showIf(OK,
-      λ.span(`Hello World!`),
-      λ.span(`Loading...`)
+  test(`λ.mapKey(keys, λ.fn)(array)`, () => {
+    const menu = λ.compose(
+      λ.ul,
+      λ.mapKey({key: `id`, children: `text`},
+        λ.li
+      )
     )
-    const result = <span>Hello World!</span>
+    const result = (
+      <ul>
+        {objItems.map(item =>
+          <li key={item.id}>{item.text}</li>
+        )}
+      </ul>
+    )
 
-    expect(input).toEqual(result)
+    expect(menu(objItems)).toEqual(result)
   })
 
-  test(`λ.showIf(false, a, b) -> b`, () => {
-    const input = λ.showIf(NO,
-      λ.span(`Hello World!`),
-      λ.span(`Loading...`)
+  test(`λ.mapKey([keys], λ.fn)(array)`, () => {
+    const menu = λ.compose(
+      λ.ul,
+      λ.mapKey([`id`, `text`],
+        λ.li
+      )
     )
-    const result = <span>Loading...</span>
+    const result = (
+      <ul>
+        {objItems.map(item =>
+          <li key={item.id}>{item.text}</li>
+        )}
+      </ul>
+    )
 
-    expect(input).toEqual(result)
+    expect(menu(objItems)).toEqual(result)
   })
 })
 

@@ -12,7 +12,7 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/sultan99/react-on-lambda.svg)
 [![Build Status](https://travis-ci.org/sultan99/react-on-lambda.svg?branch=master)](https://travis-ci.org/sultan99/react-on-lambda)
 [![Coverage Status](https://coveralls.io/repos/github/sultan99/react-on-lambda/badge.svg)](https://coveralls.io/github/sultan99/react-on-lambda)
-[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.0.20/dist/react-on-lambda.min.js?compression=gzip
+[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.1.0/dist/react-on-lambda.min.js?compression=gzip
 )](https://unpkg.com/react-on-lambda@0.0.7/dist/react-on-lambda.min.js)
 [![GitHub license](https://img.shields.io/github/license/sultan99/react-on-lambda.svg)](https://github.com/sultan99/react-on-lambda/blob/master/LICENSE)
 
@@ -58,15 +58,15 @@ Most of time RoL showed faster results from **3%** up to **10%** than JSX versio
 - React on lambda: `2.03 KB`
 - JSX: `2.57 KB`
 
-RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `1.4KB`.
-So the real advantage will be if application size is larger than 7KB.
+RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `1.2 KB`.
+So the real advantage will be if application size is larger than `7 KB`.
 
 <br/>
 
 ## Examples
 You can find a whole application as an example:
  - [master branch](https://github.com/sultan99/rol-usage) - no state management
- - [redux branch](https://github.com/sultan99/rol-usage/tree/redux) - using [redux](https://redux.js.org/)
+ - [redux branch](https://github.com/sultan99/rol-usage/tree/redux)
 
 <br/>
 
@@ -140,17 +140,6 @@ export default app
 ```
 <br/>
 
-**Function showIf**
-```js
-const app = props => λ.div(
-  λ.showIf(!props.isLoading,
-    λ.h1(`Welcome to React on λambda!`),
-    λ.span(`Please wait, page is loading...`)
-  )
-)
-```
-<br/>
-
 **Function mapKey**
 ```js
 const pages = [`Home page`, `Portfolio`, `About`]
@@ -170,7 +159,7 @@ const pages = [`Home page`, `Portfolio`, `About`]
 ```
 <br/>
 
-**Composition of pluck and mapKey**
+**Composition**
 ```js
 const data = [
   {id: 123, name: `foo`},
@@ -180,22 +169,27 @@ const data = [
 const userList = λ.compose(
   λ.div,
   λ.ul,
-  λ.mapKey(λ.li),
-  λ.pluck(`name`, `id`)
+  λ.mapKey([`id`, `name`],
+    λ.li
+  )
 )
 
 userList(data)
 
 // jsx equivalent
-<div>
-  <ul>
-    {data.map(user = >
-      <li key={user.id}>
+const UserList = ({data}) => (
+  <div>
+    <ul>
+      {data.map(user = >
+        <li key={user.id}>
         {user.name}
-      </li>
-    )}
-  </ul>
-</div>
+        </li>
+      )}
+    </ul>
+  </div>
+)
+
+<UserList data="data"/>
 ```
 <br/>
 

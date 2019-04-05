@@ -14,6 +14,33 @@ const callFns = args => (
   )
 )
 
+const curry = fn => {
+  const next = (...x) => fn.length <= x.length
+    ? fn(...x) : (...y) => next(...x, ...y)
+  return next
+}
+
+const mapArray = curry((el, items) =>
+  items.map((item, index) => {
+    const props = {key: index}
+    const children = item
+    return el(props, children)
+  })
+)
+
+const mapObject = curry((keys, el, items) =>
+  items.map((item) => {
+    const props = {}
+    let children
+    for (let key in keys) {
+      key === `children`
+        ? children = item[keys[key]]
+        : props[key] = item[keys[key]]
+    }
+    return el(props, children)
+  })
+)
+
 const createElement = tagName => (...args) => {
   const [props, ...children] = args
   const isProps = isItProps(props)
@@ -35,21 +62,20 @@ const createElement = tagName => (...args) => {
   )
 }
 
-const addKey = el => (item, index) => {
-  const [value, key] = Array.isArray(item)
-    ? item : [item, index]
-  return el({key}, value)
+const lambda = (comp, ...args) => {
+  const fn = (...props) => (
+    props[0] && props[0].raw
+      ? createElement(styled(comp)(...props))
+      : createElement(comp)(...props)
+  )
+  return !args.length ? fn : fn(...args)
 }
-
-const lambda = comp => (...args) => (
-  args[0] && args[0].raw
-    ? createElement(styled(comp)(...args))
-    : createElement(comp)(...args)
-)
 
 lambda.fragment = (...children) => (
   React.createElement(React.Fragment, {children})
 )
+
+lambda.curry = curry
 
 lambda.compose = (...fns) => (...args) => (
   fns.slice().reverse().reduce(
@@ -57,22 +83,16 @@ lambda.compose = (...fns) => (...args) => (
   )
 )
 
-lambda.mapKey = (el, items) => (
-  items
-    ? items.map(addKey(el))
-    : list => list.map(addKey(el))
-)
-
-lambda.pluck = (value, key, list) => {
-  const fn = items => key
-    ? items.map(item => [item[value], item[key]])
-    : items.map((item, index) => [item[value], index])
-  return list ? fn(list) : fn
+lambda.mapKey = (x, ...args) => {
+  if (Array.isArray(x)) {
+    const keys = {key: x[0], children: x[1]}
+    return mapObject(keys, ...args)
+  }
+  if (typeof x === `function`) {
+    return mapArray(x, ...args)
+  }
+  return mapObject(x, ...args)
 }
-
-lambda.showIf = (isOK, one, two) => (
-  isOK && one || two || null
-)
 
 const handler = {
   get: (obj, prop) => (
