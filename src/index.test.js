@@ -38,6 +38,12 @@ describe(`Core functions`, () => {
     expect(div).toBeInstanceOf(Function)
   })
 
+  test(`λ.div(props)(props) -> fn`, () => {
+    const div = λ.div({className: `app`})
+
+    expect(div({id: 123})).toBeInstanceOf(Function)
+  })
+
   test(`λ.div(props)`, () => {
     const div = λ.div({className: `app`})
     const result = <div className = 'app'/>
@@ -83,7 +89,7 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 
-  test(`λ.div(λ.fn, elment)`, () => {
+  test(`λ.div(λ.fn, element)`, () => {
     const input = λ.div(
       λ.p,
       λ.span(`Hello`)

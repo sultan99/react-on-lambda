@@ -47,25 +47,29 @@ const mapObject = curry((keys, el, items) =>
   })
 )
 
-const createElement = tagName => (...args) => {
-  const [props, ...children] = args
-  const isProps = isItProps(props)
-  if (!args.length) {
-    return React.createElement(tagName)
-  }
-  if (isProps && !children.length) {
-    return (...childs) => React.createElement(
-      tagName, ...callFns([props, ...childs])
-    )
-  }
-  if (!isProps) {
+const createElement = tagName => {
+  let props = {}
+  const next = (...args) => {
+    const [nextProps, ...children] = args
+    const isProps = isItProps(nextProps)
+    if (isProps) {
+      Object.keys(nextProps).forEach(key =>
+        props[key] = nextProps[key]
+      )
+    }
+    if (isProps && !children.length) {
+      return next
+    }
+    if (!isProps) {
+      return React.createElement(
+        tagName, props, ...callFns(args)
+      )
+    }
     return React.createElement(
-      tagName, null, ...callFns(args)
+      tagName, ...callFns([props, ...children])
     )
   }
-  return React.createElement(
-    tagName, ...callFns(args)
-  )
+  return next
 }
 
 const lambda = (comp, ...args) => {
