@@ -106,6 +106,18 @@ lambda.mapKey = (x, ...args) => {
   return mapObject(x, ...args)
 }
 
+lambda.mapProps = curry((maps, items) =>
+  items.map(item => {
+    const props = {}
+    for (let key in maps) {
+      typeof maps[key] === `function`
+        ? props[key] = maps[key](item)
+        : props[key] = item[maps[key]]
+    }
+    return props
+  })
+)
+
 const handler = {
   get: (obj, prop) => {
     const fn = prop in obj ? obj[prop] : lambda(prop)

@@ -157,7 +157,7 @@ describe(`Core functions`, () => {
   })
 })
 
-describe(`Helper function curry`, () => {
+describe(`Function curry`, () => {
   test(`λ.curry(x)`, () => {
     const f = x => `f: ${x}!`
     const g = λ.curry(f)
@@ -206,7 +206,7 @@ describe(`Helper function curry`, () => {
   })
 })
 
-describe(`Helper function compose`, () => {
+describe(`Function compose`, () => {
   test(`λ.compose() => fn`, () => {
     expect(λ.compose()).toBeInstanceOf(Function)
   })
@@ -258,7 +258,7 @@ describe(`Helper function compose`, () => {
   })
 })
 
-describe(`Helper function mapKey`, () => {
+describe(`Function mapKey`, () => {
   const objItems = [
     {id: 2, text: `Foo`},
     {id: 6, text: `Bar`},
@@ -352,7 +352,49 @@ describe(`Helper function mapKey`, () => {
   })
 })
 
-describe(`Misc styling functions`, () => {
+describe(`Function mapProps`, () => {
+  const items = [
+    {id: 2, text: `Foo`},
+    {id: 6, text: `Bar`},
+  ]
+
+  test(`λ.mapProps(obj, items)`, () => {
+    const input = λ.mapProps(
+      {key: `id`, children: `text`}, items
+    )
+    const result = [
+      {key: 2, children: `Foo`},
+      {key: 6, children: `Bar`},
+    ]
+
+    expect(input).toEqual(result)
+  })
+
+  test(`λ.mapProps(map[obj, obj])(items)`, () => {
+    const input = λ.mapProps({key: `id`, children: `text`})
+    const result = [
+      {key: 2, children: `Foo`},
+      {key: 6, children: `Bar`},
+    ]
+
+    expect(input(items)).toEqual(result)
+  })
+
+  test(`λ.mapProps(map[obj, fn], items)`, () => {
+    const input = λ.mapProps({
+      key: `id`, children: `text`,
+      selected: item => item.id === 6
+    })
+    const result = [
+      {key: 2, children: `Foo`, selected: false},
+      {key: 6, children: `Bar`, selected: true},
+    ]
+
+    expect(input(items)).toEqual(result)
+  })
+})
+
+describe(`Function styled-components`, () => {
   const div = λ.div`
     color: read;
     font-size: 18px;
