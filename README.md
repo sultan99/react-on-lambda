@@ -36,11 +36,10 @@ And get all benefits of functional programming:
 
 ## Features
 - fun functional programming
-- less and clean coding
 - output bundle size less ~22% than JSX
 - faster render and mount up to ~10% than JSX
-- no transpiler necessary, can be run directly in browser
 - smooth integration to an existing React project with JSX
+- no transpiler necessary, can be run directly in browser
 <br/>
 
 ## Benchmarks

@@ -81,7 +81,7 @@ lambda.mapKey = curry((fn, items) => {
   if (fn.type === LAMBDA) {
     const callback = items[0].key
       ? item => fn(item)
-      : (item, key) => fn({key}, item)
+      : (item, key) => fn({key})(item)
 
     return items.map(callback)
   }
