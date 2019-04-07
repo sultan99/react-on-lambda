@@ -82,6 +82,13 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 
+  test(`λ.div({children})`, () => {
+    const input = λ.div({children: `Hello`})
+    const result = <div>Hello</div>
+
+    expect(input).toEqual(result)
+  })
+
   test(`λ.div(λ.fn)`, () => {
     const input = λ.div(λ.span({id: 123}))
     const result = <div><span id={123}/></div>
@@ -225,7 +232,7 @@ describe(`Function compose`, () => {
     expect(input(1)).toBe(3)
   })
 
-  test(`λ.compose rect elements`, () => {
+  test(`λ.compose react elements`, () => {
     const input = λ.compose(
       λ.h1({className: `title`}),
       λ.a
@@ -259,96 +266,77 @@ describe(`Function compose`, () => {
 })
 
 describe(`Function mapKey`, () => {
-  const objItems = [
+  const items = [
     {id: 2, text: `Foo`},
     {id: 6, text: `Bar`},
   ]
 
-  test(`λ.mapKey(keys, λ.fn, array)`, () => {
-    const menu = λ.ul(
-      λ.mapKey({key: `id`, children: `text`},
-        λ.li,
-        objItems
-      )
-    )
-    const result = (
-      <ul>
-        {objItems.map(item =>
-          <li key={item.id}>{item.text}</li>
-        )}
-      </ul>
-    )
-
-    expect(menu).toEqual(result)
-  })
-
-  test(`λ.mapKey(keys)(λ.fn)(array)`, () => {
-    const menu = λ.ul(
-      λ.mapKey({key: `id`, children: `text`})(λ.li)(objItems)
-    )
-    const result = (
-      <ul>
-        {objItems.map(item =>
-          <li key={item.id}>{item.text}</li>
-        )}
-      </ul>
-    )
-
-    expect(menu).toEqual(result)
-  })
-
-  test(`λ.mapKey(keys, λ.fn)(array)`, () => {
+  test(`λ.mapKey(λ.fn, array)`, () => {
+    const list = [`Foo`, `Bar`]
     const menu = λ.compose(
       λ.ul,
-      λ.mapKey({key: `id`, children: `text`},
-        λ.li
-      )
+      λ.mapKey(λ.li)
     )
     const result = (
       <ul>
-        {objItems.map(item =>
-          <li key={item.id}>{item.text}</li>
+        {list.map((value, key) =>
+          <li key={key}>{value}</li>
         )}
       </ul>
     )
 
-    expect(menu(objItems)).toEqual(result)
+    expect(menu(list)).toEqual(result)
   })
 
-  test(`λ.mapKey([keys], λ.fn)(array)`, () => {
+  test(`λ.mapKey(fn(item, index), array[obj])`, () => {
     const menu = λ.compose(
       λ.ul,
-      λ.mapKey([`id`, `text`],
-        λ.li
+      λ.mapKey((item, index) =>
+        λ.li({key: item.id}, `${index})${item.text}`)
       )
     )
     const result = (
       <ul>
-        {objItems.map(item =>
-          <li key={item.id}>{item.text}</li>
+        {items.map((item, index) =>
+          <li key={item.id}>{`${index})${item.text}`}</li>
         )}
       </ul>
     )
-
-    expect(menu(objItems)).toEqual(result)
+    expect(menu(items)).toEqual(result)
   })
 
-  test(`λ.mapKey(func, array)`, () => {
-    const menu = λ.compose(
+  test(`Key auto-insert`, () => {
+    const list = λ.mapKey(item =>
+      λ.li(item.text)
+    )
+    const result = items.map((item, key) =>
+      <li key={key}>{item.text}</li>
+    )
+
+    expect(list(items)).toEqual(result)
+  })
+
+  test(`Auto-insert should not override keys`, () => {
+    const data = [
+      {id: 123, name: `Albert`, surname: `Einstein`},
+      {id: 124, name: `Daimaou `, surname: `Kosaka`},
+    ]
+    const userList = λ.compose(
       λ.ul,
-      λ.mapKey(item =>
-        λ.li({key: item.id}, item.text)
-      )
+      λ.mapKey(λ.li),
+      λ.mapProps({key: `id`, children: `name`})
     )
     const result = (
       <ul>
-        {objItems.map(item =>
-          <li key={item.id}>{item.text}</li>
+        {data.map(user =>
+          <li key={user.id}>
+            {user.name}
+          </li>
         )}
       </ul>
     )
 
-    expect(menu(objItems)).toEqual(result)
+    expect(userList(data)).toEqual(result)
   })
 })
 
@@ -358,7 +346,7 @@ describe(`Function mapProps`, () => {
     {id: 6, text: `Bar`},
   ]
 
-  test(`λ.mapProps(obj, items)`, () => {
+  test(`λ.mapProps(maps, array)`, () => {
     const input = λ.mapProps(
       {key: `id`, children: `text`}, items
     )
@@ -370,7 +358,7 @@ describe(`Function mapProps`, () => {
     expect(input).toEqual(result)
   })
 
-  test(`λ.mapProps(map[obj, obj])(items)`, () => {
+  test(`λ.mapProps(maps)(array)`, () => {
     const input = λ.mapProps({key: `id`, children: `text`})
     const result = [
       {key: 2, children: `Foo`},
@@ -380,7 +368,7 @@ describe(`Function mapProps`, () => {
     expect(input(items)).toEqual(result)
   })
 
-  test(`λ.mapProps(map[obj, fn], items)`, () => {
+  test(`λ.mapProps(maps[fn], array)`, () => {
     const input = λ.mapProps({
       key: `id`, children: `text`,
       selected: item => item.id === 6

@@ -1,8 +1,9 @@
 {
   "name": "react-on-lambda",
-  "version": "0.3.0",
+  "version": "0.3.7",
   "description": "no more jsx",
   "sideEffects": false,
+  "browserslist": "> 0.25%, not dead",
   "scripts": {
     "start": "jest --watch",
     "test": "jest --coverage",
@@ -36,6 +37,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.5.0",
+    "babel-loader": "^8.0.5",
     "coveralls": "^3.0.3",
     "eslint": "^5.15.3",
     "eslint-plugin-better-styled-components": "^1.1.1",

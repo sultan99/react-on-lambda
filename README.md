@@ -12,8 +12,8 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/sultan99/react-on-lambda.svg)
 [![Build Status](https://travis-ci.org/sultan99/react-on-lambda.svg?branch=master)](https://travis-ci.org/sultan99/react-on-lambda)
 [![Coverage Status](https://coveralls.io/repos/github/sultan99/react-on-lambda/badge.svg)](https://coveralls.io/github/sultan99/react-on-lambda)
-[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.1.0/dist/react-on-lambda.min.js?compression=gzip
-)](https://unpkg.com/react-on-lambda@0.1.0/dist/react-on-lambda.min.js)
+[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.3.7/dist/react-on-lambda.min.js?compression=gzip
+)](https://unpkg.com/react-on-lambda@0.3.7/dist/react-on-lambda.min.js)
 [![GitHub license](https://img.shields.io/github/license/sultan99/react-on-lambda.svg)](https://github.com/sultan99/react-on-lambda/blob/master/LICENSE)
 
 > A tiny library that simplifies the use of [React](https://github.com/facebook/react) without JSX.
@@ -58,8 +58,8 @@ Most of time RoL showed faster results from **3%** up to **10%** than JSX versio
 - React on lambda: `2.03KB`
 - JSX: `2.57KB`
 
-RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `1.2KB`.
-So the real advantage will be if application size is larger than `7KB`.
+RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `4.37KB` (gzip: `1.7KB`).
+So the real advantage will be if application size is larger than `17KB`.
 
 <br/>
 
@@ -150,7 +150,7 @@ const pages = [`Home page`, `Portfolio`, `About`]
 
 // jsx equivalent
 <ul>
-  {pages.map((item, key) = >
+  {pages.map((item, key) =>
     <li key={key}>
       {item}
     </li>
@@ -159,19 +159,18 @@ const pages = [`Home page`, `Portfolio`, `About`]
 ```
 <br/>
 
-**Composition**
+**Composition of mapKey and mapProps**
 ```js
 const data = [
-  {id: 123, name: `foo`},
-  {id: 124, name: `bar`},
+  {id: 123, name: `Albert`, surname: `Einstein`},
+  {id: 124, name: `Daimaou `, surname: `Kosaka`},
 ]
 
 const userList = λ.compose(
   λ.div,
   λ.ul,
-  λ.mapKey([`id`, `name`],
-    λ.li
-  )
+  λ.mapKey(λ.li),
+  λ.mapProps({key: `id`, children: `name`})
 )
 
 userList(data)
@@ -180,9 +179,9 @@ userList(data)
 const UserList = ({data}) => (
   <div>
     <ul>
-      {data.map(user = >
+      {data.map(user =>
         <li key={user.id}>
-        {user.name}
+          {user.name}
         </li>
       )}
     </ul>

@@ -1,7 +1,7 @@
-import React from 'react'
+import {Fragment, createElement} from 'react'
 import styled from './styled'
 
-const λTYPE = Symbol(`λ`)
+const LAMBDA = Symbol(`λ`)
 
 const isItProps = props => (
   props !== null
@@ -10,120 +10,110 @@ const isItProps = props => (
   && !Array.isArray(props)
 )
 
-const callFns = args => (
-  args && args.map(arg =>
-    typeof arg === `function` ? arg() : arg
+const callFns = nodes => (
+  nodes && nodes.map(node =>
+    node && node.type === LAMBDA ? node() : node
   )
 )
 
 const curry = fn => {
   const next = (...x) => fn.length <= x.length
     ? fn(...x) : (...y) => next(...x, ...y)
+  next.type = LAMBDA
+
   return next
 }
 
-const mapFunc = curry((fn, items) =>
-  items.map(fn)
-)
-
-const mapArray = curry((el, items) =>
-  items.map((item, index) => {
-    const props = {key: index}
-    const children = item
-    return el(props, children)
-  })
-)
-
-const mapObject = curry((keys, el, items) =>
-  items.map((item) => {
-    const props = {}
-    let children
-    for (let key in keys) {
-      key === `children`
-        ? children = item[keys[key]]
-        : props[key] = item[keys[key]]
-    }
-    return el(props, children)
-  })
-)
-
-const createElement = tagName => {
+const createNode = tagName => {
   let props = {}
   const next = (...args) => {
     const [nextProps, ...children] = args
     const isProps = isItProps(nextProps)
+
     if (isProps) {
       Object.keys(nextProps).forEach(key =>
         props[key] = nextProps[key]
       )
     }
-    if (isProps && !children.length) {
+    if (isProps && !props.children && !children.length) {
       return next
     }
     if (!isProps) {
-      return React.createElement(
+      return createElement(
         tagName, props, ...callFns(args)
       )
     }
-    return React.createElement(
+
+    return createElement(
       tagName, ...callFns([props, ...children])
     )
   }
+  next.type = LAMBDA
+
   return next
 }
 
 const lambda = (comp, ...args) => {
+  const isStyled = prop => prop && prop.raw
   const fn = (...props) => (
-    props[0] && props[0].raw
-      ? createElement(styled(comp)(...props))
-      : createElement(comp)(...props)
+    isStyled(props[0])
+      ? createNode(styled(comp)(...props))
+      : createNode(comp)(...props)
   )
+  fn.type = LAMBDA
+
   return !args.length ? fn : fn(...args)
 }
 
 lambda.fragment = (...children) => (
-  React.createElement(React.Fragment, {children})
+  createElement(Fragment, {children})
 )
 
 lambda.curry = curry
 
 lambda.compose = (...fns) => (...args) => (
   fns.slice().reverse().reduce(
-    (acc, fn, idx) => !idx ? fn(...args) : fn(acc), null
+    (acc, fn, index) => !index ? fn(...args) : fn(acc), null
   )
 )
 
-lambda.mapKey = (x, ...args) => {
-  if (Array.isArray(x)) {
-    const keys = {key: x[0], children: x[1]}
-    return mapObject(keys, ...args)
+lambda.mapKey = curry((fn, items) => {
+  if (fn.type === LAMBDA) {
+    const callback = items[0].key
+      ? item => fn(item)
+      : (item, key) => fn({key}, item)
+
+    return items.map(callback)
   }
-  if (typeof x === `function`) {
-    return x.type === λTYPE
-      ? mapArray(x, ...args)
-      : mapFunc(x, ...args)
-  }
-  return mapObject(x, ...args)
-}
+
+  const result = items.map(fn)
+  const first = result[0]
+  const isNode = first && first.$$typeof
+  const hasKey = isNode && first.key
+
+  return !isNode || hasKey ? result
+    : result.map((el, index) =>
+      ({...el, key: `${index}`})
+    )
+})
 
 lambda.mapProps = curry((maps, items) =>
   items.map(item => {
     const props = {}
-    for (let key in maps) {
+    Object.keys(maps).forEach(key =>
       typeof maps[key] === `function`
         ? props[key] = maps[key](item)
         : props[key] = item[maps[key]]
-    }
+    )
+
     return props
   })
 )
 
 const handler = {
-  get: (obj, prop) => {
-    const fn = prop in obj ? obj[prop] : lambda(prop)
-    fn.type = λTYPE
-    return fn
-  }
+  get: ($this, prop) => (
+    prop in $this ? $this[prop] : lambda(prop)
+  )
 }
 
 export default new Proxy(lambda, handler)
