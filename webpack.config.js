@@ -4,17 +4,6 @@ const rootPath = dir => path.resolve(__dirname, dir)
 
 module.exports = {
   mode: `production`,
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: `babel-loader`
-        }
-      }
-    ]
-  },
   output: {
     path: rootPath(`./dist`),
     filename: `react-on-lambda.min.js`,

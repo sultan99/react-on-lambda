@@ -3,18 +3,18 @@ import styled from './styled'
 
 const LAMBDA = Symbol(`λ`)
 
+const isArray = Array.isArray
+
 const isItProps = props => (
   props !== null
   && typeof props === `object`
   && !props.$$typeof
-  && !Array.isArray(props)
+  && !isArray(props)
 )
 
-const callFns = nodes => (
-  nodes && nodes.map(node =>
-    node && node.type === LAMBDA ? node() : node
-  )
-)
+const isItLambda = value => value && value.type === LAMBDA
+
+const toNode = fn => isItLambda(fn) ? fn() : fn
 
 const curry = fn => {
   const next = (...x) => fn.length <= x.length
@@ -24,6 +24,15 @@ const curry = fn => {
   return next
 }
 
+const mergeProps = (props, nextProps) => {
+  const {children: el, ...rest} = nextProps
+  const children = isArray(el)
+    ? el.map(toNode)
+    : toNode(el)
+
+  return {children, ...props, ...rest}
+}
+
 const createNode = tagName => {
   let props = {}
   const next = (...args) => {
@@ -31,21 +40,19 @@ const createNode = tagName => {
     const isProps = isItProps(nextProps)
 
     if (isProps) {
-      Object.keys(nextProps).forEach(key =>
-        props[key] = nextProps[key]
-      )
+      props = mergeProps(props, nextProps)
     }
     if (isProps && !props.children && !children.length) {
       return next
     }
     if (!isProps) {
       return createElement(
-        tagName, props, ...callFns(args)
+        tagName, props, ...args.map(toNode)
       )
     }
 
     return createElement(
-      tagName, ...callFns([props, ...children])
+      tagName, props, ...children.map(toNode)
     )
   }
   next.type = LAMBDA
@@ -78,7 +85,7 @@ lambda.compose = (...fns) => (...args) => (
 )
 
 lambda.mapKey = curry((fn, items) => {
-  if (fn.type === LAMBDA) {
+  if (isItLambda(fn)) {
     const callback = items[0].key
       ? item => fn(item)
       : (item, key) => fn({key})(item)
@@ -109,6 +116,12 @@ lambda.mapProps = curry((maps, items) =>
     return props
   })
 )
+
+lambda.log = tag => value => {
+  // eslint-disable-next-line
+  tag ? console.log(tag, value) : console.log(value)
+  return value
+}
 
 const handler = {
   get: ($this, prop) => (

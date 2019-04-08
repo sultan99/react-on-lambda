@@ -57,8 +57,8 @@ Most of time RoL showed faster results from **3%** up to **10%** than JSX versio
 - React on lambda: `2.03KB`
 - JSX: `2.57KB`
 
-RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `4.37KB` (gzip: `1.7KB`).
-So the real advantage will be if application size is larger than `17KB`.
+RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `2.79KB`.
+So the real advantage will be if application size is larger than `11KB`.
 
 <br/>
 

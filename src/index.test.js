@@ -82,11 +82,28 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 
-  test(`λ.div({children})`, () => {
+  test(`λ.div({children: string})`, () => {
     const input = λ.div({children: `Hello`})
     const result = <div>Hello</div>
 
     expect(input).toEqual(result)
+  })
+
+  test(`λ.div({children: array})`, () => {
+    const ul = λ.ul({
+      children: [
+        λ.li,
+        λ.li
+      ]
+    })
+    const result = (
+      <ul>
+        <li/>
+        <li/>
+      </ul>
+    )
+
+    expect(ul).toEqual(result)
   })
 
   test(`λ.div(λ.fn)`, () => {
@@ -379,6 +396,26 @@ describe(`Function mapProps`, () => {
     ]
 
     expect(input(items)).toEqual(result)
+  })
+})
+
+describe(`Function log`, () => {
+  test(`input -> λ.log() -> input`, () => {
+    const input = λ.compose(
+      λ.log()
+    )
+    const result = `Hello World!`
+
+    expect(input(result)).toBe(result)
+  })
+
+  test(`input -> λ.log('test') -> input`, () => {
+    const input = λ.compose(
+      λ.log(`test`)
+    )
+    const result = `Hello World!`
+
+    expect(input(result)).toBe(result)
   })
 })
 
