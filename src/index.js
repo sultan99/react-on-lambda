@@ -16,6 +16,13 @@ const isItLambda = value => value && value.type === LAMBDA
 
 const toNode = fn => isItLambda(fn) ? fn() : fn
 
+const toNodes = items => (
+  items.map(item => isArray(item)
+    ? item.map(toNode)
+    : toNode(item)
+  )
+)
+
 const curry = fn => {
   const next = (...x) => fn.length <= x.length
     ? fn(...x) : (...y) => next(...x, ...y)
@@ -47,12 +54,12 @@ const createNode = tagName => {
     }
     if (!isProps) {
       return createElement(
-        tagName, props, ...args.map(toNode)
+        tagName, props, ...toNodes(args)
       )
     }
 
     return createElement(
-      tagName, props, ...children.map(toNode)
+      tagName, props, ...toNodes(children)
     )
   }
   next.type = LAMBDA

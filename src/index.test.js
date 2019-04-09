@@ -145,6 +145,24 @@ describe(`Core functions`, () => {
     expect(menu(items)).toEqual(result)
   })
 
+  test(`λ.div(array[fn])`, () => {
+    const input = λ.compose(
+      λ.div,
+      () => [
+        λ.span({key: 1}),
+        λ.span({key: 2})
+      ],
+    )
+    const result = (
+      <div>
+        <span key={1}/>
+        <span key={2}/>
+      </div>
+    )
+
+    expect(input()).toEqual(result)
+  })
+
   test(`λ.div(element, array, λ.fn)`, () => {
     const tags = [`react`, `λambda`]
     const input = λ.div(
