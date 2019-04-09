@@ -339,40 +339,6 @@ describe(`Function mapKey`, () => {
     )
     expect(menu(items)).toEqual(result)
   })
-
-  test(`Key auto-insert`, () => {
-    const list = λ.mapKey(item =>
-      λ.li(item.text)
-    )
-    const result = items.map((item, key) =>
-      <li key={key}>{item.text}</li>
-    )
-
-    expect(list(items)).toEqual(result)
-  })
-
-  test(`Auto-insert should not override keys`, () => {
-    const data = [
-      {id: 123, name: `Albert`, surname: `Einstein`},
-      {id: 124, name: `Daimaou `, surname: `Kosaka`},
-    ]
-    const userList = λ.compose(
-      λ.ul,
-      λ.mapKey(λ.li),
-      λ.mapProps({key: `id`, children: `name`})
-    )
-    const result = (
-      <ul>
-        {data.map(user =>
-          <li key={user.id}>
-            {user.name}
-          </li>
-        )}
-      </ul>
-    )
-
-    expect(userList(data)).toEqual(result)
-  })
 })
 
 describe(`Function mapProps`, () => {
@@ -398,19 +364,6 @@ describe(`Function mapProps`, () => {
     const result = [
       {key: 2, children: `Foo`},
       {key: 6, children: `Bar`},
-    ]
-
-    expect(input(items)).toEqual(result)
-  })
-
-  test(`λ.mapProps(maps[fn], array)`, () => {
-    const input = λ.mapProps({
-      key: `id`, children: `text`,
-      selected: item => item.id === 6
-    })
-    const result = [
-      {key: 2, children: `Foo`, selected: false},
-      {key: 6, children: `Bar`, selected: true},
     ]
 
     expect(input(items)).toEqual(result)
@@ -457,7 +410,7 @@ describe(`Function styled-components`, () => {
     process.env.SC_NOT_INSTALLED = true
     const styled = require(`./styled`).default
 
-    expect(styled).toThrow(`Module not found: styled-components`)
+    expect(styled).toThrow(`Cannot find module 'styled-components'`)
   })
 
   test(`λ.div string)`, () => {

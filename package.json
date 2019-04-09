@@ -1,9 +1,8 @@
 {
   "name": "react-on-lambda",
-  "version": "0.3.12",
+  "version": "0.3.20",
   "description": "no more jsx",
   "sideEffects": false,
-  "browserslist": "> 0.25%, not dead",
   "scripts": {
     "start": "jest --watch",
     "test": "jest --coverage",

@@ -7,9 +7,9 @@ try {
   require.resolve(`styled-components`)
   styled = require(`styled-components`).default || require(`styled-components`)
 }
-catch {
+catch (e) {
   styled = () => {
-    throw new Error(`Module not found: styled-components`)
+    throw new Error(`Cannot find module 'styled-components'`)
   }
 }
 

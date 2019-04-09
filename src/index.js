@@ -3,6 +3,8 @@ import styled from './styled'
 
 const LAMBDA = Symbol(`λ`)
 
+const isLambda = value => value && value.type === LAMBDA
+
 const isArray = Array.isArray
 
 const isItProps = props => (
@@ -12,9 +14,7 @@ const isItProps = props => (
   && !isArray(props)
 )
 
-const isItLambda = value => value && value.type === LAMBDA
-
-const toNode = fn => isItLambda(fn) ? fn() : fn
+const toNode = fn => isLambda(fn) ? fn() : fn
 
 const toNodes = items => (
   items.map(item => isArray(item)
@@ -25,19 +25,25 @@ const toNodes = items => (
 
 const curry = fn => {
   const next = (...x) => fn.length <= x.length
-    ? fn(...x) : (...y) => next(...x, ...y)
+    ? fn(...x)
+    : (...y) => next(...x, ...y)
   next.type = LAMBDA
 
   return next
 }
 
-const mergeProps = (props, nextProps) => {
-  const {children: el, ...rest} = nextProps
-  const children = isArray(el)
-    ? el.map(toNode)
-    : toNode(el)
+// Object spreading not used to avoid babel polyfill
+// yeah it is mutable function made for performance
+const appendProps = (props, nextProps) => {
+  const toChilds = prop => isArray(prop)
+    ? toNodes(prop) : toNode(prop)
 
-  return {children, ...props, ...rest}
+  Object.keys(nextProps).forEach(key => {
+    const prop = nextProps[key]
+    props[key] = key === `children`
+      ? props[key] = toChilds(prop)
+      : prop
+  })
 }
 
 const createNode = tagName => {
@@ -47,7 +53,7 @@ const createNode = tagName => {
     const isProps = isItProps(nextProps)
 
     if (isProps) {
-      props = mergeProps(props, nextProps)
+      appendProps(props, nextProps)
     }
     if (isProps && !props.children && !children.length) {
       return next
@@ -87,37 +93,24 @@ lambda.curry = curry
 
 lambda.compose = (...fns) => (...args) => (
   fns.slice().reverse().reduce(
-    (acc, fn, index) => !index ? fn(...args) : fn(acc), null
+    (acc, fn, index) => !index
+      ? fn(...args) : fn(acc), null
   )
 )
 
 lambda.mapKey = curry((fn, items) => {
-  if (isItLambda(fn)) {
-    const callback = items[0].key
-      ? item => fn(item)
-      : (item, key) => fn({key})(item)
+  const hasKey = isArray(items) && items.length && items[0].key
+  const callback = !hasKey && isLambda(fn)
+    ? (item, key) => fn({key})(item) : fn
 
-    return items.map(callback)
-  }
-
-  const result = items.map(fn)
-  const first = result[0]
-  const isNode = first && first.$$typeof
-  const hasKey = isNode && first.key
-
-  return !isNode || hasKey ? result
-    : result.map((el, index) =>
-      ({...el, key: `${index}`})
-    )
+  return items.map(callback)
 })
 
 lambda.mapProps = curry((maps, items) =>
   items.map(item => {
     const props = {}
     Object.keys(maps).forEach(key =>
-      typeof maps[key] === `function`
-        ? props[key] = maps[key](item)
-        : props[key] = item[maps[key]]
+      props[key] = item[maps[key]]
     )
 
     return props
