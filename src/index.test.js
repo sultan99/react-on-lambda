@@ -1,5 +1,15 @@
 import React from 'react'
 import λ from './index.js'
+import {code} from './index.js'
+
+describe(`Spreading import`, () => {
+  test(`code)`, () => {
+    const input = code(`Hello World!`)
+    const result = <code>Hello World!</code>
+
+    expect(input).toEqual(result)
+  })
+})
 
 describe(`Core functions`, () => {
   test(`λ(comp) -> fn`, () => {
@@ -401,14 +411,14 @@ describe(`Function styled-components`, () => {
 
   test(`styled-components is installed`, () => {
     process.env.SC_NOT_INSTALLED = false
-    const styled = require(`./styled`).default
+    const styled = require(`./styled`)
 
     expect(styled).toBeInstanceOf(Function)
   })
 
   test(`styled-components is not installed`, () => {
     process.env.SC_NOT_INSTALLED = true
-    const styled = require(`./styled`).default
+    const styled = require(`./styled`)
 
     expect(styled).toThrow(`Cannot find module 'styled-components'`)
   })

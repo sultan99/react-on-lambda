@@ -1,6 +1,6 @@
 {
   "name": "react-on-lambda",
-  "version": "0.3.20",
+  "version": "0.3.21",
   "description": "no more jsx",
   "sideEffects": false,
   "scripts": {

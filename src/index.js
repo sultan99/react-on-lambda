@@ -1,5 +1,5 @@
-import {Fragment, createElement} from 'react'
-import styled from './styled'
+const {Fragment, createElement} = require(`react`)
+const styled = require(`./styled`)
 
 const LAMBDA = Symbol(`λ`)
 
@@ -124,9 +124,13 @@ lambda.log = tag => value => {
 }
 
 const handler = {
-  get: ($this, prop) => (
-    prop in $this ? $this[prop] : lambda(prop)
+  get: (target, prop) => (
+    prop in target ? target[prop] : lambda(prop)
   )
 }
 
-export default new Proxy(lambda, handler)
+const rol = new Proxy(lambda, handler)
+
+module.exports = rol
+
+module.exports.default = rol

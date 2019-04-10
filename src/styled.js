@@ -13,4 +13,4 @@ catch (e) {
   }
 }
 
-export default styled
+module.exports = styled
