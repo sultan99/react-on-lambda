@@ -12,8 +12,8 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/sultan99/react-on-lambda.svg)
 [![Build Status](https://travis-ci.org/sultan99/react-on-lambda.svg?branch=master)](https://travis-ci.org/sultan99/react-on-lambda)
 [![Coverage Status](https://coveralls.io/repos/github/sultan99/react-on-lambda/badge.svg)](https://coveralls.io/github/sultan99/react-on-lambda)
-[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.4.0/dist/react-on-lambda.min.js?compression=gzip
-)](https://unpkg.com/react-on-lambda@0.4.0/dist/react-on-lambda.min.js)
+[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.4.2/dist/react-on-lambda.min.js?compression=gzip
+)](https://unpkg.com/react-on-lambda@0.4.2/dist/react-on-lambda.min.js)
 [![GitHub license](https://img.shields.io/github/license/sultan99/react-on-lambda.svg)](https://github.com/sultan99/react-on-lambda/blob/master/LICENSE)
 
 > A tiny library that simplifies the use of [React](https://github.com/facebook/react) without JSX.
@@ -64,7 +64,7 @@ So the real advantage will be if the application size is larger than `11KB`.
 <br/>
 
 ## Examples
-You can find a whole application as an example:
+You can find a whole `Todo` application as an example:
  - [master branch](https://github.com/sultan99/rol-usage) - redux & ramda
  - [simple branch](https://github.com/sultan99/rol-usage/tree/simple) - no state management
 
@@ -116,10 +116,48 @@ $ npm i styled-components -S
 ## API documentation
 Full documentation will be provided later, at this moment some snippets.
 
+**Creating elements and component**
+
+```js
+import λ from 'react-on-lambda'
+
+λ.h1({className: `title`, align: `center`}, `Hello`) // -> <h1 className="title" align="center">Hello</h1>
+λ(Provider, {store}, app) // <Provider store="store"><App/></Provider>
+```
+<br/>
+
+**Currying function**
+
+Endless currying until `children` or empty parameter is applied to the function.
+
+```js
+const onClick = () => {} // just for demo
+
+const span = λ.span({className: `tag`})({color: green})({size: `large`}) // -> function
+span() // -> <span className="tag" color="green" size="large"/>
+
+const btnPrimary = λ.button({primary: true}) // -> function
+btnPrimary({onClick}, `Save`) // -> <button primary onClick={onClick}>Save</button>
+```
+
+So with currying you can predefine some properties of components.
+
+Later you can override properties.
+
+```js
+const span = λ.span({size: `large`})
+span({size: `small`}, `Sorry we changed our mind`)
+// <span size="small">Sorry we changed our mind</span>
+```
+
+
+<br/>
+
 **Styling**
 
 `λ` wraps [styled-components](https://github.com/styled-components/styled-components) 
-and returns a function.
+and returns a function. 
+>Usage of styled-components is optional
 
 ```js
 import λ from 'react-on-lambda'
@@ -167,7 +205,7 @@ const data = [
 ]
 
 const userList = λ.compose(
-  λ.div,
+  λ.div({class: `followers`}),
   λ.ul,
   λ.mapKey(λ.li),
   λ.mapProps({key: `id`, children: `name`})
@@ -176,10 +214,10 @@ const userList = λ.compose(
 userList(data)
 
 // jsx equivalent
-const UserList = ({data}) => (
-  <div>
+const UserList = props => (
+  <div className="followers">
     <ul>
-      {data.map(user =>
+      {props.data.map(user =>
         <li key={user.id}>
           {user.name}
         </li>
@@ -188,7 +226,7 @@ const UserList = ({data}) => (
   </div>
 )
 
-<UserList data="data"/>
+<UserList data={data}/>
 ```
 <br/>
 
