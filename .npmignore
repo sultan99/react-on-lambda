@@ -7,6 +7,9 @@
 .travis.yml
 assets
 coverage
+docs
+jest.config.js
 node_modules
 src
+tests
 webpack.config.js

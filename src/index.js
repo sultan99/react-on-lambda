@@ -1,29 +1,55 @@
-const {Fragment, createElement} = require(`react`)
 const styled = require(`./styled`)
+const {Fragment, createElement} = require(`react`)
 
 const LAMBDA = Symbol(`λ`)
+const {assign} = Object
+const {isArray} = Array
 
-const isLambda = value => value && value.type === LAMBDA
+const isLamda = value => value.type === LAMBDA
 
-const isArray = Array.isArray
+const isEmpty = value => !value || value === true
 
-const isItProps = props => (
+const isProps = props => (
   props !== null
   && typeof props === `object`
+  && !props.children
   && !props.$$typeof
   && !isArray(props)
 )
 
-const toNode = fn => isLambda(fn) ? fn() : fn
-
-const toNodes = items => (
-  items.map(item => isArray(item)
-    ? item.map(toNode)
-    : toNode(item)
-  )
+const isChild = value => (
+  typeof value === `number` ||
+  typeof value === `string` ||
+  typeof value === `object` && value.$$typeof
 )
 
-const curry = fn => {
+const addProps = (props, args) => (
+  args.reduce(toProps, props)
+)
+
+function addChild(props = {}, child) {
+  if (isArray(props.children)) {
+    return assign(
+      {}, props, {children: [...props.children, child]}
+    )
+  }
+
+  return props.children
+    ? assign({}, props, {children: [props.children, child]})
+    : assign({}, props, {children: child})
+}
+
+function toProps(props, next) {
+  if (isEmpty(next)) return props
+  if (isChild(next)) return addChild(props, next)
+  if (isLamda(next)) return addChild(props, next())
+  if (isArray(next)) return addProps(props, next)
+  if (isArray(next.children)) return addProps(props, next.children)
+
+  return assign({}, props, next)
+}
+
+function curry(fn) {
   const next = (...x) => fn.length <= x.length
     ? fn(...x)
     : (...y) => next(...x, ...y)
@@ -32,48 +58,18 @@ const curry = fn => {
   return next
 }
 
-// Object spreading not used to avoid babel polyfill
-// yeah it is mutable function made for performance
-const appendProps = (props, nextProps) => {
-  const toChilds = prop => isArray(prop)
-    ? toNodes(prop) : toNode(prop)
-
-  Object.keys(nextProps).forEach(key => {
-    const prop = nextProps[key]
-    props[key] = key === `children`
-      ? props[key] = toChilds(prop)
-      : prop
-  })
-}
-
-const createNode = tagName => {
-  let props = {}
-  const next = (...args) => {
-    const [nextProps, ...children] = args
-    const isProps = isItProps(nextProps)
-
-    if (isProps) {
-      appendProps(props, nextProps)
-    }
-    if (isProps && !props.children && !children.length) {
-      return next
-    }
-    if (!isProps) {
-      return createElement(
-        tagName, props, ...toNodes(args)
-      )
-    }
-
-    return createElement(
-      tagName, props, ...toNodes(children)
-    )
-  }
+function createNode(type, props) {
+  const next = (...args) => (
+    isProps(args[0]) && args.length === 1
+      ? createNode(type, addProps(props, args))
+      : createElement(type, addProps(props, args))
+  )
   next.type = LAMBDA
 
   return next
 }
 
-const lambda = (comp, ...args) => {
+function lambda(comp, ...args) {
   const isStyled = prop => prop && prop.raw
   const fn = (...props) => (
     isStyled(props[0])
@@ -86,21 +82,18 @@ const lambda = (comp, ...args) => {
 }
 
 lambda.fragment = (...children) => (
-  createElement(Fragment, {children})
+  createElement(Fragment, addProps({}, children))
 )
 
 lambda.curry = curry
 
-lambda.compose = (...fns) => (...args) => (
-  fns.slice().reverse().reduce(
-    (acc, fn, index) => !index
-      ? fn(...args) : fn(acc), null
-  )
+lambda.compose = (...fns) => fns.reduce(
+  (a, b) => (...args) => a(b(...args))
 )
 
 lambda.mapKey = curry((fn, items) => {
   const hasKey = isArray(items) && items.length && items[0].key
-  const callback = !hasKey && isLambda(fn)
+  const callback = !hasKey && isLamda(fn)
     ? (item, key) => fn({key})(item) : fn
 
   return items.map(callback)
