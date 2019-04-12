@@ -102,6 +102,37 @@ describe(`Core functions`, () => {
   })
 
   test(`λ.div({children: array})`, () => {
+    const columns = [
+      {title: `Name`, dataIndex: `name`},
+      {title: `Age`, dataIndex: `age`},
+      {title: `Address`, dataIndex: `address`}
+    ]
+    const header = λ.compose(
+      λ.thead,
+      λ.tr,
+      λ.mapKey(λ.th),
+      λ.mapProps({
+        key: `dataIndex`,
+        children: `title`
+      })
+    )
+    const input = header(columns)
+    const result = (
+      <thead>
+        <tr>
+          {columns.map(column =>
+            <th key={column.dataIndex}>
+              {column.title}
+            </th>
+          )}
+        </tr>
+      </thead>
+    )
+
+    expect(input).toEqual(result)
+  })
+
+  test(`λ.div({children: array[null, fn]})`, () => {
     const input = λ.ul(
       {children: [λ.li, λ.li]},
       null,

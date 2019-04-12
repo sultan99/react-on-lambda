@@ -93,10 +93,14 @@ lambda.compose = (...fns) => fns.reduce(
 
 lambda.mapKey = curry((fn, items) => {
   const hasKey = isArray(items) && items.length && items[0].key
-  const callback = !hasKey && isLamda(fn)
-    ? (item, key) => fn({key})(item) : fn
+  if (hasKey && isLamda(fn)) {
+    return items.map(item => fn(item))
+  }
+  if (!hasKey && isLamda(fn)) {
+    return items.map((item, key) => fn({key})(item))
+  }
 
-  return items.map(callback)
+  return items.map(fn)
 })
 
 lambda.mapProps = curry((maps, items) =>
