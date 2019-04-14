@@ -46,7 +46,6 @@ describe(`Function compose`, () => {
       </h1>
     )
     const input = title({className: `no-link`}, `Read more`)
-
     expect(input).toEqual(result)
   })
 })

@@ -1,13 +1,12 @@
+const React = require(`react`)
 const styled = require(`./styled`)
-const {Fragment, createElement} = require(`react`)
 
 const LAMBDA = Symbol(`λ`)
-const {assign} = Object
+
 const {isArray} = Array
+const {assign} = Object
 
-const isLamda = value => value.type === LAMBDA
-
-const isEmpty = value => !value || value === true
+const isLambda = value => value.type === LAMBDA
 
 const isProps = props => (
   props !== null
@@ -17,53 +16,61 @@ const isProps = props => (
   && !isArray(props)
 )
 
-const isChild = value => (
-  typeof value === `number` ||
-  typeof value === `string` ||
-  typeof value === `object` && value.$$typeof
-)
-
-const addProps = (props, args) => (
-  args.reduce(toProps, props)
-)
-
-function addChild(props = {}, child) {
-  if (isArray(props.children)) {
-    return assign(
-      {}, props, {children: [...props.children, child]}
+const toElement = elements => (
+  elements.reduce((list, el) => {
+    if (isArray(el)) {
+      list.push(...toElement(el))
+      return list
+    }
+    el && list.push(
+      isLambda(el) ? el() : el
     )
+
+    return list
+  }, [])
+)
+
+function toChilds(args) {
+  const [nextProps, ...rest] = args
+  const childs = nextProps && nextProps.children
+  if (childs) {
+    const children = isArray(childs) ? childs : [childs]
+    return toElement(children)
   }
 
-  return props.children
-    ? assign({}, props, {children: [props.children, child]})
-    : assign({}, props, {children: child})
+  return isProps(nextProps)
+    ? toElement(rest)
+    : toElement(args)
 }
 
-function toProps(props, next) {
-  if (isEmpty(next)) return props
-  if (isChild(next)) return addChild(props, next)
-  if (isLamda(next)) return addChild(props, next())
-  if (isArray(next)) return addProps(props, next)
-  if (isArray(next.children)) return addProps(props, next.children)
+function createNode(type) {
+  let props = {}
+  const next = (...args) => {
+    const nextProps = args[0] || {}
+    const propType = isProps(nextProps)
 
-  return assign({}, props, next)
+    if (propType || nextProps.children) {
+      props = assign({}, props, nextProps)
+      delete props.children
+    }
+
+    if (propType && args.length === 1) {
+      return next
+    }
+
+    return React.createElement(
+      type, props, ...toChilds(args)
+    )
+  }
+  next.type = LAMBDA
+
+  return next
 }
 
 function curry(fn) {
   const next = (...x) => fn.length <= x.length
     ? fn(...x)
     : (...y) => next(...x, ...y)
-  next.type = LAMBDA
-
-  return next
-}
-
-function createNode(type, props) {
-  const next = (...args) => (
-    isProps(args[0]) && args.length === 1
-      ? createNode(type, addProps(props, args))
-      : createElement(type, addProps(props, args))
-  )
   next.type = LAMBDA
 
   return next
@@ -82,7 +89,7 @@ function lambda(comp, ...args) {
 }
 
 lambda.fragment = (...children) => (
-  createElement(Fragment, addProps({}, children))
+  createNode(React.Fragment)(...children)
 )
 
 lambda.curry = curry
@@ -93,10 +100,12 @@ lambda.compose = (...fns) => fns.reduce(
 
 lambda.mapKey = curry((fn, items) => {
   const hasKey = isArray(items) && items.length && items[0].key
-  if (hasKey && isLamda(fn)) {
+
+  if (hasKey && isLambda(fn)) {
     return items.map(item => fn(item))
   }
-  if (!hasKey && isLamda(fn)) {
+
+  if (!hasKey && isLambda(fn)) {
     return items.map((item, key) => fn({key})(item))
   }
 

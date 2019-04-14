@@ -38,6 +38,7 @@ describe(`Function mapKey`, () => {
         )}
       </ul>
     )
+
     expect(menu(items)).toEqual(result)
   })
 })

@@ -101,6 +101,13 @@ describe(`Core functions`, () => {
     expect(input).toEqual(result)
   })
 
+  test(`λ.div({children: [string]})`, () => {
+    const input = λ.div({children: [`Hello`]})
+    const result = <div>Hello</div>
+
+    expect(input).toEqual(result)
+  })
+
   test(`λ.div({children: array})`, () => {
     const columns = [
       {title: `Name`, dataIndex: `name`},
@@ -127,23 +134,6 @@ describe(`Core functions`, () => {
           )}
         </tr>
       </thead>
-    )
-
-    expect(input).toEqual(result)
-  })
-
-  test(`λ.div({children: array[null, fn]})`, () => {
-    const input = λ.ul(
-      {children: [λ.li, λ.li]},
-      null,
-      λ.li
-    )
-    const result = (
-      <ul>
-        <li/>
-        <li/>
-        <li/>
-      </ul>
     )
 
     expect(input).toEqual(result)

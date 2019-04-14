@@ -1,6 +1,6 @@
 {
   "name": "react-on-lambda",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "A JavaScript library for building React applications in more functional way. Alternative to JSX.",
   "sideEffects": false,
   "scripts": {
