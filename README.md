@@ -3,8 +3,10 @@
   <br/>
   <br/>
   <br/>
+  
   <img src="https://raw.githubusercontent.com/sultan99/react-on-lambda/gh-pages/assets/comics.png"/>
 </div>
+
 <br/>
 <br/>
 
@@ -12,8 +14,7 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/sultan99/react-on-lambda.svg)
 [![Build Status](https://travis-ci.org/sultan99/react-on-lambda.svg?branch=master)](https://travis-ci.org/sultan99/react-on-lambda)
 [![Coverage Status](https://coveralls.io/repos/github/sultan99/react-on-lambda/badge.svg)](https://coveralls.io/github/sultan99/react-on-lambda)
-[![gzip bundle size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.4.4/dist/react-on-lambda.min.js?compression=gzip
-)](https://unpkg.com/react-on-lambda@0.4.4/dist/react-on-lambda.min.js)
+[![gzip size](http://img.badgesize.io/https://unpkg.com/react-on-lambda@0.4.4/dist/react-on-lambda.min.js?compression=gzip)](https://unpkg.com/react-on-lambda@0.4.4/dist/react-on-lambda.min.js)
 [![GitHub license](https://img.shields.io/github/license/sultan99/react-on-lambda.svg)](https://github.com/sultan99/react-on-lambda/blob/master/LICENSE)
 
 > A tiny library that simplifies the use of [React](https://github.com/facebook/react) without JSX.
@@ -32,6 +33,7 @@ And get all benefits of functional programming:
  - curry and function composition
  - easier testing and debugging
  - compact and clean code
+ 
 <br/>
 
 ## Features
@@ -40,11 +42,14 @@ And get all benefits of functional programming:
 - faster render and mount up to ~10% than JSX
 - smooth integration to an existing React project with JSX
 - no transpiler necessary, can be run directly in browser
+
 <br/>
 
 ## Benchmarks
 [The project](https://github.com/sultan99/rol-vs-jsx) includes two applications written using 
-React on lambda and JSX for comparisons. The follow results were gained:
+React on lambda and JSX for comparisons.
+
+The follow results were gained:
 
 **Render performance**
 - React on lambda: `8.50ms`
@@ -57,20 +62,27 @@ Most of time RoL showed faster results from **3%** up to **10%** than JSX versio
 - React on lambda: `2.03KB`
 - JSX: `2.57KB`
 
-RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `2.72KB`.
+RoL bundle size is less than JSX version 26%, but here we need to take an account the library size: `2.77KB`.
 
 So the real advantage will be if the application size is larger than `11KB`.
 
 <br/>
 
 ## Examples
-You can find a whole `Todo` application as an example:
- - [master branch](https://github.com/sultan99/rol-usage) - redux & ramda
- - [simple branch](https://github.com/sultan99/rol-usage/tree/simple) - no state management
+React on lambda demo projects:
+
+[Table component](https://github.com/sultan99/rol-table) is example of stateless components and function compositions.
+
+A live demo at [codesandbox](https://codesandbox.io/s/jjlo9m5jq5).
+
+Todos application:
+ - [master branch](https://github.com/sultan99/rol-todos) - redux & ramda
+ - [hooks branch](https://github.com/sultan99/rol-todos/tree/hooks) - no state management
 
 <br/>
 
 Read more info about symbol `λ` in the section: [editor configuration](#editor-configuration).
+
 ```js
 import λ from 'react-on-lambda' // or import l from 'react-on-lambda'
 import {render} from 'react-dom'
@@ -100,7 +112,7 @@ render(
 <br/>
 
 ## Getting started
-The primary you will need to install the `react-on-lambda` and `react`:
+The primary you will need to install `react-on-lambda` and `react`:
 
 ```sh
 $ npm i react-on-lambda react -S
@@ -114,16 +126,25 @@ $ npm i styled-components -S
 <br/>
 
 ## API documentation
-Full documentation will be provided later, at this moment some snippets.
 
-**Creating elements and component**
+**Creating element and component**
 
 ```js
-import λ from 'react-on-lambda'
+import λ, {div} from 'react-on-lambda'
 
-λ.h1({className: `title`, align: `center`}, `Hello`) // -> <h1 className="title" align="center">Hello</h1>
-λ(Provider, {store}, app) // <Provider store="store"><App/></Provider>
+div(`Hello world!`)
+// jsx equivalent
+<div>Hello world!</div>
+
+λ.section({class: `sample`}, `Hello world!`)
+// jsx equivalent
+<section className="sample">Hello world!</section>
+
+λ(Provider, {store}, app)
+// jsx equivalent
+<Provider store={store}><App/></Provider>
 ```
+
 <br/>
 
 **Currying function**
@@ -134,22 +155,26 @@ Endless currying until `children` or empty parameter is applied to the function.
 const onClick = () => {} // just for demo
 
 const span = λ.span({className: `tag`})({color: green})({size: `large`}) // -> function
-span() // -> <span className="tag" color="green" size="large"/>
+span()
+// jsx equivalent
+<span className="tag" color="green" size="large"/>
 
 const btnPrimary = λ.button({primary: true}) // -> function
-btnPrimary({onClick}, `Save`) // -> <button primary onClick={onClick}>Save</button>
+btnPrimary({onClick}, `Save`)
+// jsx equivalent
+<button primary onClick={onClick}>Save</button>
 ```
 
 So with currying you can predefine some properties of components.
 
-Later you can override properties.
+Or even you can override properties later.
 
 ```js
-const span = λ.span({size: `large`})
+const span = λ.span({size: `large`}) // -> function
 span({size: `small`}, `Sorry we changed our mind`)
-// <span size="small">Sorry we changed our mind</span>
+// jsx equivalent
+<span size="small">Sorry we changed our mind</span>
 ```
-
 
 <br/>
 
@@ -157,7 +182,7 @@ span({size: `small`}, `Sorry we changed our mind`)
 
 `λ` wraps [styled-components](https://github.com/styled-components/styled-components) 
 and returns a function. 
->Usage of styled-components is optional
+>Installation of styled-components is optional
 
 ```js
 import λ from 'react-on-lambda'
@@ -183,7 +208,7 @@ export default app
 const pages = [`Home page`, `Portfolio`, `About`]
 
 λ.ul(
-  λ.mapKey(λ.ul, pages)
+  λ.mapKey(λ.li, pages)
 )
 
 // jsx equivalent
@@ -197,7 +222,7 @@ const pages = [`Home page`, `Portfolio`, `About`]
 ```
 <br/>
 
-**Composition of mapKey and mapProps**
+**Composition**
 ```js
 const data = [
   {id: 123, name: `Albert`, surname: `Einstein`},
@@ -230,6 +255,19 @@ const UserList = props => (
 ```
 <br/>
 
+**Debug**
+
+```js
+const userList = λ.compose(
+  λ.div,
+  λ.ul,
+  λ.log(`after mapping`), // -> will log piping value
+  λ.mapKey(λ.li)
+)
+```
+
+<br/>
+
 ## Editor configuration
 > Code highlighting in Atom
 
@@ -254,7 +292,17 @@ If you like to try using `λ` you can setup hot key and CSS syntax highlighting 
 <br/>
 <br/>
 
-## Support
+## Feedback 
+Any questions or suggestions?
+
+You are welcome to discuss it on:
+
+[![Gitter](https://badges.gitter.im/react-on-lambda/community.svg)](https://gitter.im/react-on-lambda/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/sultan_arziev)
+
+<br/>
+<br/>
+
 <a href="https://www.buymeacoffee.com/KGEzqayNQ" target="_blank">
   <img src="https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-2.svg" alt="Buy Me A Coffee"/>
 </a>

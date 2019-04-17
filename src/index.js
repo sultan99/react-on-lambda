@@ -3,8 +3,8 @@ const styled = require(`./styled`)
 
 const LAMBDA = Symbol(`λ`)
 
-const {isArray} = Array
 const {assign} = Object
+const {isArray} = Array
 
 const isLambda = value => value.type === LAMBDA
 
@@ -32,10 +32,11 @@ const toElement = elements => (
 
 function toChilds(args) {
   const [nextProps, ...rest] = args
-  const childs = nextProps && nextProps.children
-  if (childs) {
-    const children = isArray(childs) ? childs : [childs]
-    return toElement(children)
+  const {children} = nextProps || {}
+
+  if (children) {
+    const childs = isArray(children) ? children : [children]
+    return toElement(childs)
   }
 
   return isProps(nextProps)
@@ -106,7 +107,9 @@ lambda.mapKey = curry((fn, items) => {
   }
 
   if (!hasKey && isLambda(fn)) {
-    return items.map((item, key) => fn({key})(item))
+    return items.map(
+      (item, key) => fn({key})(item)
+    )
   }
 
   return items.map(fn)
