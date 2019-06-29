@@ -3,8 +3,9 @@ const styled = require(`./styled`)
 
 const LAMBDA = Symbol(`λ`)
 
-const {assign} = Object
 const {isArray} = Array
+
+const clone = (...args) => Object.assign({}, ...args)
 
 const isLambda = value => value.type === LAMBDA
 
@@ -16,10 +17,10 @@ const isProps = props => (
   && !isArray(props)
 )
 
-const toElement = elements => (
-  elements.reduce((list, el) => {
+const toChilds = items => items.reduce(
+  (list, el) => {
     if (isArray(el)) {
-      list.push(...toElement(el))
+      list.push(...toChilds(el))
       return list
     }
     el && list.push(
@@ -27,45 +28,38 @@ const toElement = elements => (
     )
 
     return list
-  }, [])
+  }, []
 )
 
-function toChilds(args) {
-  const [nextProps, ...rest] = args
-  const {children} = nextProps || {}
-
-  if (children) {
-    const childs = isArray(children) ? children : [children]
-    return toElement(childs)
-  }
-
-  return isProps(nextProps)
-    ? toElement(rest)
-    : toElement(args)
-}
-
 function createNode(type) {
-  let props = {}
-  const next = (...args) => {
-    const nextProps = args[0] || {}
-    const propType = isProps(nextProps)
+  const next = prevProps => (...args) => {
+    const [nextProps, ...children] = args
+    const isNextProps = isProps(nextProps)
 
-    if (propType || nextProps.children) {
-      props = assign({}, props, nextProps)
-      delete props.children
+    if (isNextProps && args.length === 1) {
+      const props = clone(prevProps, nextProps)
+      const nextLambda = next(props)
+      nextLambda.type = LAMBDA
+      return nextLambda
     }
 
-    if (propType && args.length === 1) {
-      return next
+    if (isNextProps) {
+      const props = clone(prevProps, nextProps)
+      return React.createElement(
+        type, props, ...toChilds(children)
+      )
+    }
+
+    if (nextProps && nextProps.children) {
+      return React.createElement(type, nextProps)
     }
 
     return React.createElement(
-      type, props, ...toChilds(args)
+      type, prevProps, ...toChilds(args)
     )
   }
-  next.type = LAMBDA
 
-  return next
+  return next({})
 }
 
 function curry(fn) {
@@ -77,7 +71,7 @@ function curry(fn) {
   return next
 }
 
-function lambda(comp, ...args) {
+function lambda(comp) {
   const isStyled = prop => prop && prop.raw
   const fn = (...props) => (
     isStyled(props[0])
@@ -86,7 +80,7 @@ function lambda(comp, ...args) {
   )
   fn.type = LAMBDA
 
-  return !args.length ? fn : fn(...args)
+  return fn
 }
 
 lambda.fragment = (...children) => (

@@ -103,7 +103,7 @@ describe(`Core functions`, () => {
 
   test(`λ.div({children: [string]})`, () => {
     const input = λ.div({children: [`Hello`]})
-    const result = <div>Hello</div>
+    const result = <div>{[`Hello`]}</div>
 
     expect(input).toEqual(result)
   })
@@ -211,5 +211,22 @@ describe(`Core functions`, () => {
     )
 
     expect(input).toEqual(result)
+  })
+
+  test(`Reuse same component`, () => {
+    const box = λ.div({className: `box`})
+    const boxes = λ.compose(
+      box({height: `10px`}),
+      box({width: `15px`}),
+    )
+    const result = (
+      <div className="box" height="10px">
+        <div className="box" width="15px">
+          Hello world!
+        </div>
+      </div>
+    )
+
+    expect(boxes(`Hello world!`)).toEqual(result)
   })
 })
