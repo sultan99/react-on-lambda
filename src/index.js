@@ -71,7 +71,7 @@ function curry(fn) {
   return next
 }
 
-function lambda(comp) {
+function lambda(comp, ...rest) {
   const isStyled = prop => prop && prop.raw
   const fn = (...props) => (
     isStyled(props[0])
@@ -80,7 +80,7 @@ function lambda(comp) {
   )
   fn.type = LAMBDA
 
-  return fn
+  return rest.length ? fn(...rest) : fn
 }
 
 lambda.fragment = (...children) => (

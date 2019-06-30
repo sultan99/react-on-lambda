@@ -33,8 +33,16 @@ describe(`Core functions`, () => {
 
   test(`λ(comp)(props, string)`, () => {
     const Title = props => <h1 {...props}/>
-    const input = λ(Title)({id: 123}, `Hello World!`)
-    const result = <Title id={123}>Hello World!</Title>
+    const input = λ(Title)({id: 124}, `Hello World!`)
+    const result = <Title id={124}>Hello World!</Title>
+
+    expect(input).toEqual(result)
+  })
+
+  test(`λ(comp, props, string)`, () => {
+    const Caption = props => <h1 {...props}/>
+    const input = λ(Caption, {id: 125}, `Hello World!`)
+    const result = <Caption id={125}>Hello World!</Caption>
 
     expect(input).toEqual(result)
   })
