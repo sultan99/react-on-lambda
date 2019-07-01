@@ -33,6 +33,24 @@ describe(`Function compose`, () => {
     expect(input).toEqual(result)
   })
 
+  test(`λ.compose nested in react element`, () => {
+    const input = λ.div(
+      λ.compose(
+        λ.h1({className: `title`}),
+        λ.a({href: `_blank`})
+      )
+    )
+    const result = (
+      <div>
+        <h1 className='title'>
+          <a href="_blank"/>
+        </h1>
+      </div>
+    )
+
+    expect(input).toEqual(result)
+  })
+
   test(`λ.compose narity`, () => {
     const title = λ.compose(
       λ.h1({className: `title`}),

@@ -89,9 +89,14 @@ lambda.fragment = (...children) => (
 
 lambda.curry = curry
 
-lambda.compose = (...fns) => fns.reduce(
-  (a, b) => (...args) => a(b(...args))
-)
+lambda.compose = (...fns) => {
+  const composer = fns.reduce(
+    (a, b) => (...args) => a(b(...args))
+  )
+  composer.type = LAMBDA
+
+  return composer
+}
 
 lambda.mapKey = curry((fn, items) => {
   const hasKey = isArray(items) && items.length && items[0].key
