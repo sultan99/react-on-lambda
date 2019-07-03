@@ -125,6 +125,12 @@ lambda.mapProps = curry((maps, items) =>
   })
 )
 
+lambda.nest = (...args) => (
+  args.slice()
+    .reverse()
+    .reduce((result, fn) => fn(result))
+)
+
 lambda.log = tag => value => {
   // eslint-disable-next-line
   tag ? console.log(tag, value) : console.log(value)
