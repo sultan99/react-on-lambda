@@ -32,31 +32,35 @@ const toChilds = items => items.reduce(
 )
 
 function createNode(type) {
-  const next = prevProps => (...args) => {
-    const [nextProps, ...children] = args
-    const isNextProps = isProps(nextProps)
+  function next(prevProps) {
+    function fn(...args) {
+      const [nextProps, ...children] = args
+      const isNextProps = isProps(nextProps)
 
-    if (isNextProps && args.length === 1) {
-      const props = clone(prevProps, nextProps)
-      const nextLambda = next(props)
-      nextLambda.type = LAMBDA
-      return nextLambda
-    }
+      if (isNextProps && args.length === 1) {
+        const props = clone(prevProps, nextProps)
+        const nextLambda = next(props)
+        return nextLambda
+      }
 
-    if (isNextProps) {
-      const props = clone(prevProps, nextProps)
+      if (isNextProps) {
+        const props = clone(prevProps, nextProps)
+        return React.createElement(
+          type, props, ...toChilds(children)
+        )
+      }
+
+      if (nextProps && nextProps.children) {
+        return React.createElement(type, nextProps)
+      }
+
       return React.createElement(
-        type, props, ...toChilds(children)
+        type, prevProps, ...toChilds(args)
       )
     }
+    fn.type = LAMBDA
 
-    if (nextProps && nextProps.children) {
-      return React.createElement(type, nextProps)
-    }
-
-    return React.createElement(
-      type, prevProps, ...toChilds(args)
-    )
+    return fn
   }
 
   return next({})
